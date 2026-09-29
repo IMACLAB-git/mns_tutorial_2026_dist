@@ -30,7 +30,7 @@ Claude Code와 함께 문헌 탐색 → 가설 → 실험 → 원고를 한 흐�
 | `bigpicture.md` | 최종 주장, 가설 지도, 다음 가설, 현재 search 범위 |
 | `decision_log.md` | 연구 결정 기록 |
 | `papers/` | 수집 규칙, `seed_papers.csv`, 수집 보조 스크립트 `collect.py`, search 라운드 기록 `rounds/` |
-| `wiki/` | 논문 페이지(글쓰기 노트 포함), 개념, 비교표 `matrix.md`, 공백과 RQ `gaps.md`, 글쓰기 패턴 `writing.md`, 목차 |
+| `wiki/` | 논문 페이지(글쓰기 노트 포함), 개념, 비교표 `matrix.md`, 공백과 RQ `gaps.md`, 글쓰기 패턴 `writing.md`, 목차, 변경 기록 `log.md` |
 | `hypotheses/` | 가설 페이지 양식: 가추 근거, 최소 검증, 사전 기각 기준, 판정 |
 | `experiments/` | 실험 폴더 양식: `protocol.md`, `result.md`(+ 실험마다 `data/`, `analysis/`) |
 | `manuscript/` | `draft.md`: 가설마다 절을 두고 `[대기]`로 시작하는 원고 |

@@ -12,6 +12,7 @@
   - `wiki/gaps.md`: 공백과 RQ 후보
   - `wiki/writing.md`: 두 편 이상에서 반복되는 글쓰기 패턴
   - `wiki/index.md`: 목차
+  - `wiki/log.md`: 위키 변경 기록
 
 ## 작업 순서
 1. 논문 페이지를 양식대로 만들고 `status: summarized`로 둔다. 글쓰기 노트도 채운다.
@@ -20,7 +21,8 @@
 4. `gaps.md`: 공백 표(공백 | 근거 논문·원문 위치·근거 등급 | 해석)를 쓴 뒤, 공백마다 RQ 후보를 하나씩 쓴다.
 5. 글쓰기 노트에서 두 편 이상 반복되는 패턴은 `writing.md`로 올린다.
 6. `index.md`에 새 페이지를 한 줄씩 추가한다.
-7. search 라운드에서 들어온 논문이 공백 판정을 바꾸면, `gaps.md`의 해당 공백에 영향 판정(strengthened | weakened | refuted | no_change | needs_review)을 적고, 관련 가설 이름과 함께 `decision_log.md`에 적는다.
+7. `log.md`에 입력, 생성·수정·건너뛴 파일, 상태 변화, `matrix.md`·`gaps.md`에 미친 영향(없으면 "영향 없음"), 중단이나 사람 승인 이유를 적는다.
+8. search 라운드에서 들어온 논문이 공백 판정을 바꾸면, `gaps.md`의 해당 공백에 영향 판정(strengthened | weakened | refuted | no_change | needs_review)을 적고, 관련 가설 이름과 함께 `log.md`와 `decision_log.md`에 적는다.
 
 ## 지킬 것
 - 모든 주장과 수치, 비교표의 칸마다 원문 위치(p. / Fig. / Table)를 적는다. 모르는 칸은 `needs_review`로 둔다.

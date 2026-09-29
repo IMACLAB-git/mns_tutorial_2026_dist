@@ -32,7 +32,7 @@ search → 정리·비교 → 큰 그림 → 가설 → 검증 → 원고 → (�
 - `experiments/` — 실험·시뮬레이션·기준선 재현 기록. 작업 전에 `experiments/README.md`를 읽고 따른다.
 - `manuscript/` — 원고 = 연구 설계도. 작업 전에 `manuscript/README.md`를 읽고 따른다.
 - `explainer/` — (선택) 위키를 배경지식으로 대상 논문 설명 페이지를 만든다. 작업 전에 `explainer/README.md`를 읽고 따른다.
-- `decision_log.md` — 가설·실험·원고·큰 그림·공백 판정에 관한 결정 기록.
+- `decision_log.md` — 가설·실험·원고·큰 그림·공백 판정에 관한 결정 기록. 위키 변경 기록은 `wiki/log.md`에 따로 둔다.
 
 # 검증 규칙 (모든 작업에 적용)
 
@@ -55,4 +55,4 @@ search → 정리·비교 → 큰 그림 → 가설 → 검증 → 원고 → (�
 - 위키 논문 페이지의 `status: checked`, RQ 채택, 원고 주장 문장의 확정
 - 실험 수행(에이전트는 프로토콜 초안, 분석, 기록을 맡는다)
 
-에이전트는 위 항목을 제안까지만 하고, 사람이 확인한 뒤 반영한다. 에이전트가 직접 갱신하는 것은 `bigpicture.md`의 가설 표 상태 열과 "현재 search 범위", 그리고 `decision_log.md` 기록이다. 갱신할 때마다 `decision_log.md`에 적는다.
+에이전트는 위 항목을 제안까지만 하고, 사람이 확인한 뒤 반영한다. 에이전트가 직접 갱신하는 것은 `bigpicture.md`의 가설 표 상태 열과 "현재 search 범위", 그리고 `decision_log.md`·`wiki/log.md` 기록이다. `bigpicture.md`를 갱신할 때마다 `decision_log.md`에 적는다.
