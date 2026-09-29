@@ -1,11 +1,12 @@
 ---
 title:
-authors:
+authors: []   # 전체 저자를 원문 순서대로. 저자 허브는 제1저자와 마지막 저자로 만든다
 year:
-venue:
+venue:        # 저널·학회 전체 이름. 권·쪽 번호는 허브에서 뗀다
 doi:
 source_file:
 license:
+tags: []      # wiki/tags.md에 있는 태그만
 status: summarized   # summarized | checked | needs_review
 ---
 

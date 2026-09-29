@@ -3,7 +3,7 @@
 | 대상 | 라이선스 |
 |---|---|
 | 문서: `README.md`, `CLAUDE.md`, 폴더별 `README.md`와 양식(`_template`), 빈 문서 틀 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) — © 2026 SLEE |
-| 코드: `papers/collect.py` | MIT License (아래 전문) — © 2026 SLEE |
+| 코드: `papers/collect.py`, `wiki/_scripts/build_hubs.py` | MIT License (아래 전문) — © 2026 SLEE |
 
 이 템플릿을 복사해 자기 프로젝트를 시작해도 된다. 템플릿의 규칙 문서를 고쳐 쓰거나 다시 배포할 때는 출처("MNS 2026 연구 작업공간 템플릿, SLEE")를 밝힌다.
 
