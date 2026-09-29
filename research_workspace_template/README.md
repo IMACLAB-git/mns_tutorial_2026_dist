@@ -12,7 +12,7 @@ Claude Code와 함께 문헌 탐색 → 가설 → 실험 → 원고를 한 흐�
 | 단계 | 요청 예 | 사람이 할 일 |
 |---|---|---|
 | 수집 | `papers/README.md 규칙에 따라 seed_papers.csv의 논문을 수집해줘.` | `needs_manual` 논문을 직접 받아 넣기 |
-| 정리·비교 | `wiki/README.md 규칙에 따라 collected 논문의 페이지를 만들고, 비교 축을 제안해줘.` | 비교 축 정하기, 핵심 페이지를 원문과 대조해 `checked`로 바꾸기 |
+| 정리·비교 | `wiki/README.md 규칙에 따라 collected 논문의 페이지를 만들고, 비교 축과 태그 후보를 제안해줘.` | 비교 축 정하기, 태그 어휘를 `wiki/tags.md`에 적기, 핵심 페이지를 원문과 대조해 `checked`로 바꾸기 |
 | 공백 | `matrix.md를 만들고 gaps.md에 공백과 RQ 후보를 써줘.` | RQ 채택 |
 | 큰 그림 | `gaps.md를 근거로 bigpicture.md의 최종 주장 후보 2–3개를 제안해줘. 결정은 내가 한다.` | 최종 주장 고르기 |
 | 가설 | `bigpicture.md의 최종 주장을 hypotheses/README.md 규칙에 따라 최소 가설로 쪼개고, 사전 기각 기준을 제안해줘.` | 기각 기준 확인·잠금 |
