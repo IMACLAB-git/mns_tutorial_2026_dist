@@ -2,7 +2,7 @@
 
 | 대상 | 라이선스 |
 |---|---|
-| 문서와 화면 캡처: `README.md`, `GUIDE.md`, `guide_img/`, `papers/seed_papers.csv` | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) — © 2026 SLEE |
+| 문서와 화면 캡처: `README.md`, `GUIDE.md`, `GUIDE.html`, `guide_img/`, `papers/seed_papers.csv` | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) — © 2026 SLEE |
 | 코드: `wiki/_scripts/build_hubs.py` | MIT License (아래 전문) — © 2026 SLEE |
 
 다시 쓸 때는 출처("MNS 2026 실습: 논문에서 RQ까지, SLEE")를 밝힌다.

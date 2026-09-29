@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MNS 2026 논문에서 RQ까지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@600;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* 로컬 파일로 열 때 필요한 기본값(아티팩트로 게시하면 서버가 붙인다) */
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+/* Layout: 넓은 화면은 왼쪽 고정 단계 목록 + 본문 한 단, 좁은 화면은 위쪽 가로 단계 목록 + 본문 */
+:root {
+  --bg: #f3f5f7;
+  --surface: #ffffff;
+  --ink: #17202b;
+  --muted: #566172;
+  --line: #d8dde5;
+  --accent: #0c6b66;
+  --accent-soft: #e0f0ee;
+  --code-bg: #eceff3;
+  --infer-fg: #7d5200;
+  --infer-bg: #fbeed2;
+  --review-fg: #9c2238;
+  --review-bg: #fae2e7;
+  --shadow: 0 1px 2px rgba(20, 30, 45, .06), 0 6px 20px rgba(20, 30, 45, .06);
+  --f-display: "Hahmlet", "Noto Serif KR", "AppleMyungjo", serif;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1318; --surface: #161b22; --ink: #e3e8ee; --muted: #97a1b0; --line: #29313c;
+    --accent: #4fc2b4; --accent-soft: #12302d; --code-bg: #1d242d;
+    --infer-fg: #f1c56e; --infer-bg: #3a2b0f; --review-fg: #f39cab; --review-bg: #3e1720;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1318; --surface: #161b22; --ink: #e3e8ee; --muted: #97a1b0; --line: #29313c;
+  --accent: #4fc2b4; --accent-soft: #12302d; --code-bg: #1d242d;
+  --infer-fg: #f1c56e; --infer-bg: #3a2b0f; --review-fg: #f39cab; --review-bg: #3e1720;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+code {
+  font-family: var(--f-mono);
+  font-size: .86em;
+  background: var(--code-bg);
+  padding: .1em .38em;
+  border-radius: 4px;
+  word-break: break-all;
+}
+.chip {
+  font-family: var(--f-mono);
+  font-size: .82em;
+  font-weight: 500;
+  padding: .12em .45em;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.chip.infer { color: var(--infer-fg); background: var(--infer-bg); }
+.chip.review { color: var(--review-fg); background: var(--review-bg); }
+kbd {
+  font-family: var(--f-mono);
+  font-size: .8em;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: .05em .4em;
+  background: var(--surface);
+  white-space: nowrap;
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 0 72px;
+}
+@media (min-width: 980px) {
+  .shell { grid-template-columns: 224px minmax(0, 1fr); gap: 56px; padding-inline: 32px; }
+}
+
+/* 단계 목록 */
+.rail {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: var(--bg);
+  margin-inline: -16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; }
+.rail a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.rail .n { font-family: var(--f-display); font-weight: 700; color: var(--ink); min-width: 1ch; text-align: center; }
+.rail .tick { color: var(--accent); font-weight: 600; visibility: hidden; }
+.rail a.done .tick { visibility: visible; }
+.rail a[aria-current="true"] { color: var(--ink); border-color: var(--accent); background: var(--accent-soft); }
+.rail .rail-title { display: none; }
+@media (min-width: 980px) {
+  .rail {
+    align-self: start;
+    top: calc(env(safe-area-inset-top, 0px) + 32px);
+    margin: 32px 0 0;
+    padding: 0;
+    border: 0;
+    overflow: visible;
+  }
+  .rail .rail-title {
+    display: block;
+    font-size: 12px;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin: 0 0 12px 12px;
+  }
+  .rail ol { flex-direction: column; gap: 2px; }
+  .rail a { border: 0; background: transparent; border-radius: 8px; white-space: normal; padding: 7px 12px; }
+  .rail a:hover { background: var(--surface); color: var(--ink); }
+  .rail a[aria-current="true"] { background: var(--surface); box-shadow: var(--shadow); }
+  .rail .tick { margin-left: auto; }
+  .rail .sep { height: 1px; background: var(--line); margin: 10px 12px; }
+}
+.rail .sep { flex: 0 0 1px; background: var(--line); }
+
+main { min-width: 0; max-width: 760px; }
+
+/* 머리말 */
+.intro { padding-block: 44px 8px; display: grid; gap: 18px; }
+.eyebrow { font-size: 13px; letter-spacing: .08em; color: var(--muted); margin: 0; }
+h1 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 5.2vw, 3rem);
+  line-height: 1.2;
+  margin: 0;
+  text-wrap: balance;
+}
+.lead { font-size: 1.08rem; color: var(--ink); margin: 0; max-width: 62ch; }
+.paper {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.paper .label { font-size: 12px; letter-spacing: .08em; color: var(--muted); }
+.paper .cite { font-family: var(--f-display); font-weight: 600; font-size: 1.05rem; line-height: 1.5; }
+.paper .meta { font-size: 14px; color: var(--muted); }
+.notes { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--muted); font-size: 15px; }
+.notes strong { color: var(--ink); font-weight: 600; }
+
+/* 단계 */
+section.step { padding-top: 56px; }
+.step-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 16px; align-items: baseline; margin-bottom: 18px; }
+.step-no {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 3.2rem;
+  line-height: 1;
+  color: var(--accent);
+  grid-row: span 2;
+  font-variant-numeric: tabular-nums;
+}
+h2 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  margin: 0;
+  text-wrap: balance;
+}
+.step-meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+.step-meta span { font-size: 13px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 10px; background: var(--surface); }
+.step-lede { margin: 0 0 18px; }
+
+ol.tasks { list-style: none; counter-reset: task; margin: 0; padding: 0; display: grid; gap: 22px; }
+ol.tasks > li { counter-increment: task; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 0 12px; }
+ol.tasks > li::before {
+  content: counter(task);
+  font-family: var(--f-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin-top: 1px;
+  background: var(--surface);
+}
+ol.tasks > li > .body { min-width: 0; display: grid; gap: 12px; }
+ol.tasks p { margin: 0; }
+ul.sub { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; color: var(--ink); }
+ul.sub li::marker { color: var(--muted); }
+.aside { color: var(--muted); font-size: 15px; margin: 0; }
+
+/* 입력문 */
+.prompt { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
+.prompt-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 8px 6px 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  letter-spacing: .06em;
+  color: var(--muted);
+}
+.prompt pre {
+  margin: 0;
+  padding: 14px;
+  background: var(--code-bg);
+  font-family: var(--f-mono);
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.copy {
+  font: 500 13px var(--f-body);
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.copy:hover { background: var(--accent-soft); }
+
+/* 화면 캡처 */
+figure.shot { margin: 0; display: grid; gap: 8px; }
+.shot button {
+  display: block;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+  cursor: zoom-in;
+  box-shadow: var(--shadow);
+}
+.shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; max-width: 100%; }
+.shot figcaption { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+/* 확인 상자 */
+.check {
+  margin-top: 26px;
+  padding: 16px 18px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent-soft);
+  display: grid;
+  gap: 8px;
+}
+.check h3 { margin: 0; font-size: 14px; letter-spacing: .06em; color: var(--accent); font-weight: 600; }
+.check p, .check ul { margin: 0; }
+.check ul { padding-left: 1.1em; display: grid; gap: 4px; }
+.done {
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.done input { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
+
+/* 표 */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { font-size: 13px; letter-spacing: .04em; color: var(--muted); font-weight: 600; background: var(--code-bg); }
+td:first-child { font-weight: 600; min-width: 11em; }
+
+.related { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.related li { padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: grid; gap: 4px; }
+.related code { justify-self: start; }
+
+footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+
+/* 확대 보기 */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(8, 12, 18, .88);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+}
+.lightbox img { max-width: 100%; max-height: 100%; margin: auto; object-fit: contain; border-radius: 6px; }
+.lb-close { justify-self: end; font: 500 14px var(--f-body); color: #fff; background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .3); border-radius: 6px; padding: 6px 14px; cursor: pointer; }
+.lb-cap { margin: 0; color: #d9dee6; font-size: 14px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="rail" aria-label="단계">
+    <p class="rail-title">따라하기 순서</p>
+    <ol>
+      <li><a href="#prep" data-sec="prep"><span class="n">·</span><span>준비물</span></a></li>
+      <li><a href="#s0" data-sec="s0"><span class="n">0</span><span>작업공간 열기</span><span class="tick" aria-hidden="true">✓</span></a></li>
+      <li><a href="#s1" data-sec="s1"><span class="n">1</span><span>CLAUDE.md 쓰기</span><span class="tick" aria-hidden="true">✓</span></a></li>
+      <li><a href="#s2" data-sec="s2"><span class="n">2</span><span>OA 논문 수집</span><span class="tick" aria-hidden="true">✓</span></a></li>
+      <li><a href="#s3" data-sec="s3"><span class="n">3</span><span>대상 논문 페이지</span><span class="tick" aria-hidden="true">✓</span></a></li>
+      <li><a href="#s4" data-sec="s4"><span class="n">4</span><span>비교 논문과 비교표</span><span class="tick" aria-hidden="true">✓</span></a></li>
+      <li><a href="#s5" data-sec="s5"><span class="n">5</span><span>공백에서 RQ로</span><span class="tick" aria-hidden="true">✓</span></a></li>
+      <li><a href="#s6" data-sec="s6"><span class="n">6</span><span>설명 페이지 (추가)</span><span class="tick" aria-hidden="true">✓</span></a></li>
+      <li class="sep" aria-hidden="true"></li>
+      <li><a href="#stuck" data-sec="stuck"><span class="n">?</span><span>막혔을 때</span></a></li>
+      <li><a href="#related" data-sec="related"><span class="n">↗</span><span>관련 폴더</span></a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="intro">
+      <p class="eyebrow">MNS 2026 실습 · VS Code + Claude Code</p>
+      <h1>논문 한 편에서 RQ까지</h1>
+      <p class="lead">대상 논문을 관련 논문과 비교해 연구 질문(RQ) 후보를 만드는 전 과정(0–5단계)과, 같은 위키로 대상 논문 설명 페이지를 만드는 추가 실습(6단계)을 VS Code 화면으로 따라간다.</p>
+      <div class="paper">
+        <span class="label">대상 논문</span>
+        <span class="cite">Park et al., “Field-programmable robotic folding sheet”</span>
+        <span class="meta"><i>Nature Communications</i> 16, 6937 (2025) · <a href="https://doi.org/10.1038/s41467-025-61838-3" target="_blank" rel="noopener">doi:10.1038/s41467-025-61838-3</a> · CC BY-NC-ND 4.0</span>
+      </div>
+      <ul class="notes">
+        <li>화면은 2026-09-29에 이 작업공간과 같은 시작 상태(당시 폴더 이름 <code>workspace</code>)에서 실제로 실행하며 캡처했다. 그때 만들어진 파일은 <code>../mns_tutorial_2026_example/</code>에 있다. 경로는 배포 묶음의 <code>mns_tutorial_2026_blank/</code> 폴더 기준이다.</li>
+        <li>Claude의 응답은 실행할 때마다 달라진다. 문장이 똑같지 않아도 된다. <strong>결과 파일이 생겼는지, 규칙(원문 위치, <span class="chip infer">[추론]</span>, <span class="chip review">needs_review</span>)이 지켜졌는지</strong>를 확인한다.</li>
+        <li>막히면 <code>../mns_tutorial_2026_example/</code>에서 같은 단계의 파일을 보거나 복사한다.</li>
+      </ul>
+    </header>
+
+    <!-- 준비물 -->
+    <section class="step" id="prep">
+      <div class="step-head">
+        <span class="step-no" aria-hidden="true">·</span>
+        <h2>준비물</h2>
+      </div>
+      <ol class="tasks">
+        <li><div class="body"><p><strong>VS Code</strong></p></div></li>
+        <li><div class="body"><p><strong>Claude Code 확장</strong>: VS Code 확장(Extensions) 탭에서 “Claude Code”(게시자 Anthropic)를 검색해 설치하고 로그인한다.</p></div></li>
+        <li><div class="body">
+          <p><strong>Python 3</strong>: 에이전트가 PDF를 다룰 때 쓴다. 이 실행에서 쓴 패키지를 미리 설치해 두면 확인 창이 줄어든다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>터미널</span><button class="copy" type="button">복사</button></div>
+            <pre>pip install requests pypdf pymupdf</pre>
+          </div>
+          <ul class="sub">
+            <li><code>requests</code>: PDF 내려받기(2단계)</li>
+            <li><code>pypdf</code>: 쪽수와 본문 읽기(3–4단계)</li>
+            <li><code>pymupdf</code>: 그림 잘라 내기(6단계)</li>
+          </ul>
+        </div></li>
+        <li><div class="body"><p><strong>인터넷 연결</strong>: OpenAlex와 출판사 사이트에서 OA 논문을 받는다.</p></div></li>
+      </ol>
+    </section>
+
+    <!-- 0단계 -->
+    <section class="step" id="s0">
+      <div class="step-head">
+        <span class="step-no" aria-hidden="true">0</span>
+        <h2>작업공간 열기</h2>
+      </div>
+      <ol class="tasks">
+        <li><div class="body"><p>VS Code에서 <strong>File &gt; Open Folder</strong>로 이 폴더(<code>mns_tutorial_2026_blank</code>)를 연다.</p></div></li>
+        <li><div class="body">
+          <p><code>papers/seed_papers.csv</code>를 연다. DOI가 적힌 논문 6편의 목록이다. <code>wiki/</code>와 <code>explainer/</code>는 비어 있다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/00_open_folder.png" width="1600" height="1000" alt="작업공간을 연 화면"></button><figcaption>작업공간을 연 화면. 캡처할 때는 탐색기에 papers/seed_papers.csv 하나만 있었다.</figcaption></figure>
+        </div></li>
+      </ol>
+      <label class="done"><input type="checkbox" id="done-s0" data-step="s0"> 0단계를 마쳤다</label>
+    </section>
+
+    <!-- 1단계 -->
+    <section class="step" id="s1">
+      <div class="step-head">
+        <span class="step-no" aria-hidden="true">1</span>
+        <h2>CLAUDE.md 쓰기</h2>
+      </div>
+      <p class="step-lede">CLAUDE.md는 Claude Code가 대화를 시작할 때마다 자동으로 읽는 프로젝트 규칙이다.</p>
+      <ol class="tasks">
+        <li><div class="body">
+          <p>작업공간 최상위에 <code>CLAUDE.md</code>를 만든다. “프로젝트 목표”는 자기 말로 쓰고, 나머지는 <code>../mns_tutorial_2026_example/CLAUDE.md</code>를 참고한다(작업 흐름 5번 줄은 6단계에서 더한다).</p>
+          <ul class="sub"><li>담을 것: 프로젝트 목표, 작업 흐름과 폴더, 검증 규칙, RQ 형식</li></ul>
+          <figure class="shot"><button type="button"><img src="guide_img/01a_claude_md.png" width="1600" height="1000" alt="CLAUDE.md를 연 화면" loading="lazy"></button><figcaption>CLAUDE.md를 연 화면</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>편집기 오른쪽 위의 <strong>주황색 Claude 아이콘</strong>을 눌러 Claude Code를 연다.</p>
+          <p class="aside">입력창 오른쪽 아래의 <strong>Edit automatically</strong>는 파일 편집을 자동으로 승인하는 모드다. <kbd>Shift</kbd>+<kbd>Tab</kbd>으로 바꿀 수 있다. 명령 실행(Bash)은 미리 허용한 명령이 아니면 이 모드에서도 따로 묻는다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/01b_open_claude.png" width="1600" height="1000" alt="Claude Code 패널이 오른쪽에 열린 화면" loading="lazy"></button><figcaption>Claude Code 패널이 오른쪽에 열린 화면</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>규칙이 제대로 읽혔는지 확인한다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>Claude Code에 입력</span><button class="copy" type="button">복사</button></div>
+            <pre>CLAUDE.md를 읽고, 이 프로젝트에서 네가 할 일과 반드시 지킬 규칙을 다섯 줄 이내로 말해줘.</pre>
+          </div>
+          <figure class="shot"><button type="button"><img src="guide_img/01d_answer.png" width="1600" height="1000" alt="CLAUDE.md의 규칙을 다섯 줄로 되풀이한 응답" loading="lazy"></button><figcaption>CLAUDE.md의 규칙을 다섯 줄로 되풀이한 응답</figcaption></figure>
+        </div></li>
+      </ol>
+      <div class="check">
+        <h3>확인</h3>
+        <p>목표, 작업 흐름, <span class="chip infer">[추론]</span> 표시, <span class="chip review">needs_review</span>, RQ 형식이 응답에 모두 나오면 된다.</p>
+      </div>
+      <label class="done"><input type="checkbox" id="done-s1" data-step="s1"> 1단계를 마쳤다</label>
+    </section>
+
+    <!-- 2단계 -->
+    <section class="step" id="s2">
+      <div class="step-head">
+        <span class="step-no" aria-hidden="true">2</span>
+        <h2>CSV로 OA 논문 수집</h2>
+        <p class="step-meta"><span>이 실행의 결과: collected 5 · needs_manual 1</span></p>
+      </div>
+      <ol class="tasks">
+        <li><div class="body">
+          <p><code>papers/README.md</code>를 네 칸(역할 / 입력 → 출력 / 작업 순서 / 지킬 것)으로 쓴다. <code>../mns_tutorial_2026_example/papers/README.md</code>를 참고한다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/02a_papers_readme.png" width="1600" height="1000" alt="papers/README.md" loading="lazy"></button><figcaption>papers/README.md. 네 칸 틀로 쓴 수집 규칙</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>수집을 요청한다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>Claude Code에 입력</span><button class="copy" type="button">복사</button></div>
+            <pre>papers/README.md 규칙에 따라 papers/seed_papers.csv의 논문을 수집해줘. 끝나면 status별 건수를 표로 보여줘.</pre>
+          </div>
+        </div></li>
+        <li><div class="body">
+          <p>진행 중에는 에이전트가 어떤 파일을 읽고(Read) 어떤 명령을 실행하는지(Bash) 차례로 보인다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/02c_progress1.png" width="1600" height="1000" alt="수집 진행 화면" loading="lazy"></button><figcaption>수집 진행 화면. README와 CSV를 읽고 OpenAlex 조회 스크립트를 만든다.</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>결과: 5편 <code>collected</code>, 1편 <code>needs_manual</code>.</p>
+          <ul class="sub">
+            <li>Liu 2021(Science Robotics)은 OA 경로가 없어 받지 못했다. 에이전트는 이 논문을 채우지 않고 <code>needs_manual</code>로 남긴다.</li>
+            <li>에이전트가 CSV의 제목과 PDF 1쪽 제목을 대조하다가 CSV 쪽에 쉼표가 빠진 것까지 찾아 <code>note</code>에 적었다.</li>
+          </ul>
+          <figure class="shot"><button type="button"><img src="guide_img/02d_result.png" width="1600" height="1000" alt="수집 결과 표" loading="lazy"></button><figcaption>수집 결과 표. collected 5, needs_review 0, needs_manual 1</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p><code>papers/pdf/</code>에 PDF 5편이, <code>collection_status.csv</code>에 한 편당 한 줄씩 결과가 생긴다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/02e_status_csv.png" width="1600" height="1000" alt="collection_status.csv와 pdf 폴더" loading="lazy"></button><figcaption>collection_status.csv와 pdf 폴더</figcaption></figure>
+        </div></li>
+      </ol>
+      <label class="done"><input type="checkbox" id="done-s2" data-step="s2"> 2단계를 마쳤다</label>
+    </section>
+
+    <!-- 3단계 -->
+    <section class="step" id="s3">
+      <div class="step-head">
+        <span class="step-no" aria-hidden="true">3</span>
+        <h2>대상 논문 위키 페이지 + 원문 대조</h2>
+      </div>
+      <ol class="tasks">
+        <li><div class="body">
+          <p><code>wiki/README.md</code>와 <code>wiki/papers/_template.md</code>를 만든다. <code>../mns_tutorial_2026_example/wiki/</code>에서 복사해도 된다.</p>
+          <p class="aside">복사한 README의 작업 순서에는 허브 만들기(5번)와 <code>wiki/log.md</code> 변경 기록(6번)이 들어 있다. 캡처할 때의 README에는 없던 단계라 화면과 조금 다르게 진행될 수 있다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/03a_wiki_readme.png" width="1600" height="1000" alt="wiki/README.md와 양식 파일" loading="lazy"></button><figcaption>wiki/README.md와 양식 파일</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>대상 논문 페이지를 요청한다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>Claude Code에 입력</span><button class="copy" type="button">복사</button></div>
+            <pre>wiki/README.md 규칙에 따라 대상 논문(no 0, Park 2025)의 위키 페이지를 만들어줘.</pre>
+          </div>
+        </div></li>
+        <li><div class="body">
+          <p><strong>명령 실행 확인 창</strong>이 뜬다. 명령을 읽고 고른다.</p>
+          <ul class="sub">
+            <li><strong>1 Yes</strong>: 이번 한 번만 허용</li>
+            <li><strong>2 Yes, allow … for this project</strong>: 같은 종류의 명령을 이 프로젝트에서 계속 허용. 밑줄 친 범위 글자(this project)를 누르면 범위가 <strong>all projects</strong>로 바뀌니 주의한다.</li>
+            <li><strong>3 No</strong> 또는 아래 입력칸: 거절하거나 다른 방법을 지시</li>
+          </ul>
+          <figure class="shot"><button type="button"><img src="guide_img/03b_permission.png" width="1600" height="1000" alt="Allow this bash command? 확인 창" loading="lazy"></button><figcaption>Allow this bash command? 확인 창</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>완료 응답에 무엇을 만들었고 무엇을 <span class="chip review">needs_review</span>로 남겼는지 나온다. 이 실행에서는 원문 안에서 같은 수치가 본문(p.3)과 그림(Fig. 2f)에 다르게 적힌 것을 찾아 <span class="chip review">needs_review</span>로 남겼다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/03e_answer.png" width="1600" height="1000" alt="완료 응답" loading="lazy"></button><figcaption>완료 응답. needs_review로 남긴 항목과 함께 만든 개념 페이지</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>만들어진 페이지를 연다. <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>V</kbd>로 마크다운 미리보기를 보면 읽기 쉽다. 주장마다 원문 쪽 번호가 붙어 있다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/03g_park_preview.png" width="1600" height="1000" alt="Park2025.md 미리보기" loading="lazy"></button><figcaption>Park2025.md 미리보기. 주장과 원문 위치 표</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p><strong>원문 대조</strong>: 페이지가 원문과 맞는지 직접 확인시킨다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>Claude Code에 입력</span><button class="copy" type="button">복사</button></div>
+            <pre>Park2025.md의 핵심 주장 표에서 두 번째 행을 원문 해당 쪽의 문장과 나란히 보여줘.</pre>
+          </div>
+          <figure class="shot"><button type="button"><img src="guide_img/03h_verify.png" width="1600" height="1000" alt="원문 문장과 위키 표현을 나란히 놓은 대조 결과" loading="lazy"></button><figcaption>원문 문장과 위키 표현을 나란히 놓은 대조 결과</figcaption></figure>
+          <p>이 실행에서 에이전트는 위키의 “고정 힌지 없이”가 원문(p.1 “고정 힌지 구조가 제한한다”)보다 강한 표현이라고 스스로 지적하고 수정을 제안했다. 사람이 “반영해줘”라고 답하면 바뀐 부분이 비교 화면으로 표시된다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/03i_fix.png" width="1600" height="1000" alt="수정 반영 화면" loading="lazy"></button><figcaption>수정 반영. 바뀐 줄이 빨강/초록으로 표시된다.</figcaption></figure>
+        </div></li>
+      </ol>
+      <div class="check">
+        <h3>확인</h3>
+        <p>원문과 대조해 맞다고 판단한 뒤에만 <code>status: checked</code>로 바꾼다. 이 판단은 사람이 한다.</p>
+      </div>
+      <label class="done"><input type="checkbox" id="done-s3" data-step="s3"> 3단계를 마쳤다</label>
+    </section>
+
+    <!-- 4단계 -->
+    <section class="step" id="s4">
+      <div class="step-head">
+        <span class="step-no" aria-hidden="true">4</span>
+        <h2>비교 논문 4편 + 비교표</h2>
+        <p class="step-meta"><span>이 실행: 확인 창 약 30번</span><span>약 20분</span></p>
+      </div>
+      <ol class="tasks">
+        <li><div class="body">
+          <p>나머지 논문을 한꺼번에 요청한다. 논문마다 서브에이전트가 따로 읽는다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>Claude Code에 입력</span><button class="copy" type="button">복사</button></div>
+            <pre>collected 상태인 나머지 4편도 같은 규칙으로 위키 페이지를 만들어줘. 논문마다 서브에이전트를 병렬로 써줘. 끝나면 관련 개념 페이지와 wiki/matrix.md, wiki/index.md를 갱신해줘.</pre>
+          </div>
+        </div></li>
+        <li><div class="body">
+          <p>논문마다 확인 창이 여러 번 뜬다. 이 실행에서는 약 30번이었고, 모두 PDF를 읽거나 결과를 점검하는 명령이었다. 이 단계는 약 20분 걸렸다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/04b_subagent_permission.png" width="1600" height="1000" alt="서브에이전트의 실행 확인 화면" loading="lazy"></button><figcaption>서브에이전트가 Yan 2023 PDF를 읽으려고 실행 확인을 묻는 화면</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>완료 응답의 <strong>비교에서 드러난 점</strong>을 읽는다. 이 실행에서는 다음을 짚었다.</p>
+          <ul class="sub">
+            <li>표에 넣은 수치 19개를 원문에서 다시 확인했다.</li>
+            <li>Park 2025가 Ni 2022를 networked domain으로 분류했지만, Ni 원문에서는 리본이 서로 분리된 독립 채널이라 전기적으로는 networked domain이 아니다.</li>
+            <li>속도 수치는 논문마다 지표(대역폭, 형상 형성 시간, 게이트 지연)가 달라 서로 비교할 수 없다.</li>
+            <li>Liu 2021(<code>needs_manual</code>)은 표에 넣지 않았다.</li>
+          </ul>
+          <figure class="shot"><button type="button"><img src="guide_img/04c_answer.png" width="1600" height="1000" alt="4단계 완료 응답" loading="lazy"></button><figcaption>4단계 완료 응답</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p><code>matrix.md</code>를 미리보기(<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>V</kbd>)로 연다. 표가 넓으면 <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>M</kbd>으로 편집기 그룹을 최대화하고 <kbd>Ctrl</kbd>+<kbd>B</kbd>로 탐색기를 숨긴다. 같은 키를 다시 누르면 돌아간다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/04d_matrix_preview.png" width="1600" height="1000" alt="matrix.md 미리보기" loading="lazy"></button><figcaption>matrix.md 미리보기. 논문별 구동 원리, 외부 장치, 주소 지정, 센싱, 제어 루프, 속도, 형상</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>(선택) 허브를 만든다. 논문 페이지 frontmatter의 연도·학회·저자로 <code>wiki/hubs/</code>에 허브 페이지를 만들고, 논문 페이지마다 <code>허브:</code> 줄을 단다. 캡처에는 없는 단계다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>터미널</span><button class="copy" type="button">복사</button></div>
+            <pre>python wiki/_scripts/build_hubs.py</pre>
+          </div>
+          <p class="aside">주제 허브는 <code>wiki/tags.md</code>에 태그 어휘를 적고 논문 페이지에 <code>tags</code>를 붙여야 생긴다. 예시는 <code>../mns_tutorial_2026_example/wiki/tags.md</code>와 <code>wiki/hubs/</code>에 있다.</p>
+        </div></li>
+      </ol>
+      <div class="check">
+        <h3>확인</h3>
+        <p>칸마다 원문 위치가 있는지, 해석에 <span class="chip infer">[추론]</span>이 붙었는지, 확인 못 한 칸이 <span class="chip review">needs_review</span>인지 본다.</p>
+      </div>
+      <label class="done"><input type="checkbox" id="done-s4" data-step="s4"> 4단계를 마쳤다</label>
+    </section>
+
+    <!-- 5단계 -->
+    <section class="step" id="s5">
+      <div class="step-head">
+        <span class="step-no" aria-hidden="true">5</span>
+        <h2>공백에서 RQ로</h2>
+      </div>
+      <ol class="tasks">
+        <li><div class="body">
+          <p>비교표를 근거로 공백과 RQ 후보를 요청한다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>Claude Code에 입력</span><button class="copy" type="button">복사</button></div>
+            <pre>wiki/matrix.md와 논문 페이지를 근거로 Park 2025의 공백을 찾아 wiki/rq.md에 공백 표와 RQ 후보 3개를 써줘. RQ마다 조건, 비교 대상, 측정값, 판정 기준을 넣어줘.</pre>
+          </div>
+        </div></li>
+        <li><div class="body">
+          <p>완료 응답 끝의 <strong>직접 검토해 주실 것</strong>을 먼저 읽는다. 판정 기준의 값 가운데 원문에서 온 것과 새로 정한 <strong>(제안)</strong> 값이 구분되어 있다. 근거가 약한 공백 두 개는 RQ로 만들지 않고 따로 적어 두었다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/05b_answer.png" width="1600" height="1000" alt="5단계 완료 응답" loading="lazy"></button><figcaption>5단계 완료 응답. 공백과 RQ 요약, 직접 검토할 것</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p><code>rq.md</code>를 미리보기로 연다. 공백 표에는 공백, 근거 논문과 원문 위치, 해석(<span class="chip infer">[추론]</span>)이 있다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/05c_rq_preview.png" width="1600" height="1000" alt="rq.md의 공백 표" loading="lazy"></button><figcaption>rq.md의 공백 표. G1~G3</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>아래로 내리면 RQ 후보가 나온다. 이 실행에서 나온 RQ는 다음과 같다. 상태는 모두 <code>후보</code>이고, 채택은 사람이 정한다.</p>
+          <ul class="sub">
+            <li>RQ1. 외부 하중에서 형상 되먹임이 곡률 오차를 줄이는가</li>
+            <li>RQ2. 강제 대류 냉각이 폐루프 대역폭을 얼마나, 어떤 전력 비용으로 올리는가</li>
+            <li>RQ3. 같은 전극 수에서 networked domain이 pixelated domain보다 더 많은 접힘을 구현하는가</li>
+          </ul>
+          <figure class="shot"><button type="button"><img src="guide_img/05d_rq_list.png" width="1600" height="1000" alt="RQ1 상세" loading="lazy"></button><figcaption>RQ1. 질문, 근거 공백, 조건, 비교 대상, 측정값, 판정 기준</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>RQ의 근거를 원문 사실과 추론으로 나눠 보게 한다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>Claude Code에 입력</span><button class="copy" type="button">복사</button></div>
+            <pre>RQ1의 근거 공백을 뒷받침하는 원문 문장을 쪽 번호와 함께 보여줘. 원문 사실과 네 추론을 구분해줘.</pre>
+          </div>
+          <figure class="shot"><button type="button"><img src="guide_img/05e_verify.png" width="1600" height="1000" alt="RQ1 근거 검증" loading="lazy"></button><figcaption>RQ1 근거 검증. 원문에 없는 부분(추론) 다섯 가지</figcaption></figure>
+          <p>이 실행에서 에이전트는 “온도 폐루프는 하중에 의한 형상 변화를 보정하지 못한다”가 원문 문장이 아니라 여러 문장을 합친 자신의 추론이라고 밝혔다. 추론이 어디서 시작되는지 알아야 RQ를 채택할지 판단할 수 있다.</p>
+        </div></li>
+      </ol>
+      <label class="done"><input type="checkbox" id="done-s5" data-step="s5"> 5단계를 마쳤다</label>
+    </section>
+
+    <!-- 6단계 -->
+    <section class="step" id="s6">
+      <div class="step-head">
+        <span class="step-no" aria-hidden="true">6</span>
+        <h2>위키로 대상 논문 이해하기</h2>
+        <p class="step-meta"><span>추가 실습</span><span>이 실행: 확인 창 16번</span><span>약 23분</span></p>
+      </div>
+      <p class="step-lede">1–5단계의 위키는 RQ를 찾는 데만 쓰이지 않는다. 비교 논문 4편, 개념 페이지, 비교표가 이미 있으니, 이것을 배경지식으로 삼아 대상 논문을 처음 읽는 사람을 위한 설명 페이지를 만든다.</p>
+      <ol class="tasks">
+        <li><div class="body">
+          <p><code>explainer/README.md</code>를 네 칸으로 쓴다. <code>../mns_tutorial_2026_example/explainer/README.md</code>를 참고한다.</p>
+          <ul class="sub">
+            <li>작업 순서: 주장 3–5개 고르기 → 배경 개념 찾기 → 비교 논문 그림 고르기 → 대상 논문 그림과 나란히 놓기 → 게시</li>
+            <li>지킬 것: 그림마다 출처와 라이선스. CC BY-NC-ND 그림은 자르지 않고 전체를, CC BY 그림은 패널만 잘라 쓰고 “일부 발췌”라고 적는다.</li>
+          </ul>
+          <figure class="shot"><button type="button"><img src="guide_img/06a_explainer_readme.png" width="1600" height="1000" alt="explainer/README.md" loading="lazy"></button><figcaption>explainer/README.md. 네 칸 틀로 쓴 설명 페이지 규칙</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p><code>CLAUDE.md</code>의 작업 흐름에 한 줄을 더한다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>CLAUDE.md에 추가</span><button class="copy" type="button">복사</button></div>
+            <pre>5. 대상 논문 이해: `explainer/`. 위키를 배경지식으로 대상 논문 설명 페이지를 만든다. 작업 전에 `explainer/README.md`를 읽고 따른다.</pre>
+          </div>
+        </div></li>
+        <li><div class="body">
+          <p>Claude Code 패널에서 새 대화를 열고 요청한다.</p>
+          <div class="prompt">
+            <div class="prompt-head"><span>Claude Code에 입력</span><button class="copy" type="button">복사</button></div>
+            <pre>explainer/README.md 규칙에 따라 대상 논문 Park 2025를 처음 읽는 사람을 위한 설명 페이지를 만들어줘. wiki에 정리한 비교 논문들의 그림을 대상 논문 그림과 나란히 놓아 무엇이 새로운지 보여 주고, 완성되면 아티팩트로 게시해줘.</pre>
+          </div>
+        </div></li>
+        <li><div class="body">
+          <p>에이전트는 PDF보다 위키를 먼저 읽는다. 이 실행에서는 논문 페이지 5개와 개념 페이지 8개를 읽은 뒤에야 PDF에서 그림 위치와 캡션을 찾았다. 그림을 잘라 내고 렌더링을 확인하는 명령마다 확인 창이 뜬다(이 실행에서 16번, 약 23분).</p>
+          <figure class="shot"><button type="button"><img src="guide_img/06b_reading_wiki.png" width="1600" height="1000" alt="위키 페이지를 읽은 뒤 PDF 도구를 확인하는 화면" loading="lazy"></button><figcaption>위키 페이지를 차례로 읽은 뒤 PDF 도구를 확인하려는 화면</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>완료되면 <strong>Artifact · Published</strong>와 링크가 나온다. 게시된 페이지는 <strong>비공개</strong>로 시작한다. 다른 사람에게 보여 주려면 페이지의 공유(Share) 메뉴를 쓴다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/06c_published.png" width="1600" height="1000" alt="게시 완료 응답" loading="lazy"></button><figcaption>게시 완료 응답. 대상 독자, 링크, 만든 파일</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>응답의 구성 표를 읽는다. 주장마다 대비가 되는 비교 논문 그림이 하나씩 짝지어져 있다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/06d_table.png" width="1600" height="1000" alt="주장별 그림 구성 표" loading="lazy"></button><figcaption>주장별 대상 논문 그림, 비교 그림, 새로운 점을 정리한 표</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p><code>explainer/figures/</code>에 그림 파일이 생긴다. 파일 이름에 논문과 패널이 적혀 있다(예: <code>johnson2023_fig1b-e.jpg</code>). 대상 논문 그림(<code>park2025_fig1–5</code>)은 그림 전체다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/06e_figures.png" width="1600" height="1000" alt="figures 폴더와 Johnson 2023 Fig. 1b–e 발췌 그림" loading="lazy"></button><figcaption>figures 폴더와 Johnson 2023 Fig. 1b–e 발췌 그림 (CC BY 4.0)</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>링크로 페이지를 연다. 주장마다 본문(원문 위치 포함), 위키 개념 페이지에서 온 <strong>배경 개념</strong> 상자, <strong>다른 연구(왼쪽)</strong>와 <strong>대상 논문(오른쪽)</strong> 그림이 나란히 있다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/06f_claim1.png" width="1600" height="1000" alt="설명 페이지의 주장 1" loading="lazy"></button><figcaption>설명 페이지의 주장 1. 왼쪽 Zhang 2023 Fig. 2a(일부 발췌, CC BY 4.0), 오른쪽 Park 2025 Fig. 1(그림 전체, CC BY-NC-ND 4.0)</figcaption></figure>
+        </div></li>
+        <li><div class="body">
+          <p>그림 아래에 <strong>새로운 점</strong> 한 문장과 <strong>읽을 때 주의</strong>가 있다. 해석에는 <span class="chip infer">[추론]</span>이 붙어 있다.</p>
+          <figure class="shot"><button type="button"><img src="guide_img/06g_claim1_new.png" width="1600" height="1000" alt="새로운 점 상자와 읽을 때 주의 목록" loading="lazy"></button><figcaption>새로운 점 상자와 읽을 때 주의 목록 (위쪽에 Park 2025 Fig. 1 일부가 화면에 걸림, CC BY-NC-ND 4.0)</figcaption></figure>
+        </div></li>
+      </ol>
+      <div class="check">
+        <h3>확인</h3>
+        <ul>
+          <li>그림마다 출처(논문, Fig. 번호)와 라이선스가 붙어 있는가</li>
+          <li>대상 논문 그림이 잘리지 않았는가</li>
+          <li>에이전트가 직접 그린 개념도에 <span class="chip infer">[추론]</span> 표시가 있는가. 이런 그림은 원문과 직접 대조한다.</li>
+          <li>위키와 원문이 다른 곳을 보고했는가. 이 실행에서는 위키의 “field-programmable 개념을 display engineering과 FPGA에서 따왔다”가 원문(p.1)보다 강한 표현이라 페이지에는 원문대로 썼다.</li>
+        </ul>
+      </div>
+      <label class="done"><input type="checkbox" id="done-s6" data-step="s6"> 6단계를 마쳤다</label>
+    </section>
+
+    <!-- 막혔을 때 -->
+    <section class="step" id="stuck">
+      <div class="step-head">
+        <span class="step-no" aria-hidden="true">?</span>
+        <h2>막혔을 때</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">증상</th><th scope="col">대처</th></tr></thead>
+          <tbody>
+            <tr><td>nature.com에서 PDF 대신 HTML이 받아진다</td><td>Python <code>urllib</code>는 걸러지고 <code>requests</code>나 <code>curl</code>은 통과한다(2026-09-29 확인). “requests로 다시 시도해줘”라고 입력한다.</td></tr>
+            <tr><td>네트워크가 안 된다</td><td><code>../mns_tutorial_2026_example/papers/</code>의 <code>pdf/</code> 폴더(PDF 5편)와 <code>collection_status.csv</code>를 이 작업공간의 <code>papers/</code>로 복사한다.</td></tr>
+            <tr><td>확인 창이 너무 자주 뜬다</td><td>명령을 읽고 같은 종류라면 2번(this project)을 고른다. 범위가 <strong>all projects</strong>로 바뀌지 않았는지 확인한다.</td></tr>
+            <tr><td>시간이 부족하다</td><td><code>../mns_tutorial_2026_example/</code>에서 해당 단계의 결과 파일을 복사해 다음 단계로 넘어간다.</td></tr>
+            <tr><td>결과가 캡처와 다르다</td><td>정상이다. <code>../mns_tutorial_2026_example/</code>에 이 캡처를 찍을 때 실제로 생성된 파일이 있으니 비교해 본다.</td></tr>
+            <tr><td>아티팩트로 게시되지 않는다</td><td><code>explainer/park2025.html</code>을 브라우저로 열어 확인한다. 이 실행의 결과는 <code>../mns_tutorial_2026_example/explainer/park2025.html</code>에 있다.</td></tr>
+            <tr><td>그림을 잘라 내지 못한다</td><td><code>pip install pymupdf</code>로 설치한 뒤 “pymupdf로 다시 시도해줘”라고 입력한다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 관련 폴더 -->
+    <section class="step" id="related">
+      <div class="step-head">
+        <span class="step-no" aria-hidden="true">↗</span>
+        <h2>관련 폴더</h2>
+      </div>
+      <ul class="related">
+        <li><code>../mns_tutorial_2026_example/</code><span>이 가이드의 캡처를 찍을 때 에이전트가 실제로 만든 작업공간(사람이 원문과 대조하지 않은 상태). 규칙 문서, OA 논문 PDF 5편(<code>papers/pdf/</code>), 위키, 6단계 결과(<code>explainer/</code>)가 들어 있다. 논문 라이선스는 그 폴더의 <code>LICENSES.md</code>에 있다.</span></li>
+        <li><code>../research_workspace_template/</code><span>이 실습 구조에 큰 그림·가설·실험·원고를 더한 연구 작업공간 템플릿</span></li>
+      </ul>
+    </section>
+
+    <footer>
+      문서와 화면 캡처 CC BY 4.0 — © 2026 SLEE. 출처 표기: “MNS 2026 실습: 논문에서 RQ까지, SLEE”. 논문 그림이 보이는 캡처(06e, 06f, 06g)는 각 논문의 라이선스를 따른다.
+    </footer>
+  </main>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="확대한 화면" hidden>
+  <button class="lb-close" type="button" id="lb-close">닫기</button>
+  <img id="lb-img" alt="">
+  <p class="lb-cap" id="lb-cap"></p>
+</div>
+
+<script>
+(function () {
+  // 복사 버튼
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var pre = btn.closest('.prompt').querySelector('pre');
+      var text = pre.textContent;
+      var done = function () { btn.textContent = '복사됨'; setTimeout(function () { btn.textContent = '복사'; }, 1600); };
+      var fallback = function () {
+        var r = document.createRange(); r.selectNodeContents(pre);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        btn.textContent = 'Ctrl+C로 복사';
+        setTimeout(function () { btn.textContent = '복사'; }, 2400);
+      };
+      try {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } catch (e) { fallback(); }
+    });
+  });
+
+  // 캡처 확대 보기
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lb-img');
+  var lbCap = document.getElementById('lb-cap');
+  var lastFocus = null;
+  function openLb(img, cap) {
+    lastFocus = document.activeElement;
+    lbImg.src = img.currentSrc || img.src;
+    lbImg.alt = img.alt;
+    lbCap.textContent = cap;
+    lb.hidden = false;
+    document.getElementById('lb-close').focus();
+  }
+  function closeLb() {
+    lb.hidden = true;
+    lbImg.removeAttribute('src');
+    if (lastFocus) lastFocus.focus();
+  }
+  document.querySelectorAll('figure.shot').forEach(function (fig) {
+    var btn = fig.querySelector('button');
+    var img = fig.querySelector('img');
+    var cap = fig.querySelector('figcaption');
+    btn.setAttribute('aria-label', '크게 보기: ' + img.alt);
+    btn.addEventListener('click', function () { openLb(img, cap ? cap.textContent : ''); });
+  });
+  document.getElementById('lb-close').addEventListener('click', closeLb);
+  lb.addEventListener('click', function (e) { if (e.target === lb || e.target === lbImg) closeLb(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) closeLb(); });
+
+  // 단계 완료 표시 (이 브라우저에만 저장)
+  var KEY = 'mns2026-guide-done';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { state = {}; }
+  function paint() {
+    document.querySelectorAll('.rail a[data-sec]').forEach(function (a) {
+      a.classList.toggle('done', !!state[a.dataset.sec]);
+    });
+  }
+  document.querySelectorAll('input[data-step]').forEach(function (box) {
+    box.checked = !!state[box.dataset.step];
+    box.addEventListener('change', function () {
+      state[box.dataset.step] = box.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+      paint();
+    });
+  });
+  paint();
+
+  // 지금 읽는 단계 표시
+  var links = {};
+  document.querySelectorAll('.rail a[data-sec]').forEach(function (a) { links[a.dataset.sec] = a; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        Object.keys(links).forEach(function (k) { links[k].removeAttribute('aria-current'); });
+        var a = links[en.target.id];
+        if (a) {
+          a.setAttribute('aria-current', 'true');
+          var rail = a.closest('.rail');
+          if (rail && rail.scrollWidth > rail.clientWidth) {
+            rail.scrollTo({ left: a.offsetLeft - 16, behavior: 'smooth' });
+          }
+        }
+      });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    document.querySelectorAll('section.step').forEach(function (s) { io.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

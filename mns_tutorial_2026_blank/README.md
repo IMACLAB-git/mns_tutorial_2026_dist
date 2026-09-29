@@ -9,7 +9,7 @@ VS Code와 Claude Code로 연구 작업공간을 직접 만들고, 논문 한 �
 
 1. 아래 준비물을 설치한다.
 2. 이 폴더를 VS Code에서 **File > Open Folder**로 연다.
-3. **[GUIDE.md](GUIDE.md)**를 열고 0단계부터 따라 한다. 단계마다 실제 VS Code 화면이 있다.
+3. **[GUIDE.md](GUIDE.md)**를 열고 0단계부터 따라 한다. 단계마다 실제 VS Code 화면이 있다. 같은 내용을 브라우저로 보려면 `GUIDE.html`을 연다(입력문 복사 버튼, 캡처 확대 보기).
 4. 막히면 `../mns_tutorial_2026_example/`에서 같은 단계의 파일을 보거나 복사해 다음 단계로 넘어간다.
 
 ## 준비물
@@ -26,7 +26,8 @@ VS Code와 Claude Code로 연구 작업공간을 직접 만들고, 논문 한 �
 | `wiki/` | 비어 있는 위키. `papers/`, `concepts/`, 변경 기록 `log.md`, 허브 `hubs/`(연도·학회·저자·주제)와 허브를 만드는 `_scripts/build_hubs.py`만 있다. |
 | `explainer/` | 비어 있다. 6단계(추가 실습)에서 설명 페이지를 만든다. |
 | `GUIDE.md` | 단계별 따라하기(0–6단계) |
-| `guide_img/` | GUIDE.md의 화면 캡처 |
+| `GUIDE.html` | GUIDE.md를 브라우저용 페이지로 옮긴 것. `guide_img/`의 캡처를 불러온다. |
+| `guide_img/` | GUIDE.md와 GUIDE.html의 화면 캡처 |
 | `LICENSES.md` | 문서·캡처·코드 라이선스 |
 
 ## 실습에서 지키는 규칙
