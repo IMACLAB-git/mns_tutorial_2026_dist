@@ -1,0 +1,148 @@
+---
+title: A multifunctional soft robotic shape display with high-speed actuation, sensing, and control
+authors: B. K. Johnson, M. Naris, V. Sundaram, A. Volchko, K. Ly, S. K. Mitchell, E. Acome, N. Kellaris, C. Keplinger, N. Correll, J. S. Humbert, M. E. Rentschler
+year: 2023
+venue: Nature Communications 14:4516
+doi: 10.1038/s41467-023-39842-2
+source_file: papers/pdf/10_Johnson_2023.pdf
+tags: [shape-morphing-robotics, spatially-addressable-actuation, self-sensing-actuators, closed-loop-shape-control]
+status: summarized   # summarized | checked | needs_review
+---
+
+허브: [2023](../hubs/years/2023.md) · [Nature Communications](../hubs/venues/nature-communications.md) · [B. K. Johnson](../hubs/authors/b-k-johnson.md) · [M. E. Rentschler](../hubs/authors/m-e-rentschler.md) · [shape-morphing-robotics](../hubs/topics/shape-morphing-robotics.md) · [spatially-addressable-actuation](../hubs/topics/spatially-addressable-actuation.md) · [self-sensing-actuators](../hubs/topics/self-sensing-actuators.md) · [closed-loop-shape-control](../hubs/topics/closed-loop-shape-control.md)
+
+> 원문 위치의 p.는 PDF 쪽 번호(= 인쇄 쪽 번호 1–11)다. Supplementary Information(보충 그림·표·Methods·Movie)은 확보하지 않았으므로, 보충자료에만 있는 내용은 `needs_review`로 둔다. 그림에서 직접 읽은 값은 "(그림 판독)"으로 표시한다.
+
+## 한 줄 요약
+전기유압 구동기(HASEL), 자기 기반 변형 센서(soft magnetic block + magnetometer), 셀 전용 구동 회로를 한 셀에 묶었다. 이 셀 100개를 10 × 10으로 배열하고 셀마다 독립적인 전압·변형 폐루프를 돌려, 최대 50 Hz의 가역 형상 변형과 셀별 변형(평균 오차 < 0.1 mm)·힘(50 mN) 감지를 하는 soft shape display를 만들었다 (p. 1 Abstract; p. 2; Fig. 1).
+
+## 핵심 주장과 근거
+| 주장 | 원문 위치 |
+|---|---|
+| 기존 shape display의 한계로 다섯 가지를 든다: (i) 표면 불연속, 또는 구동에 의한 높은 표면 온도, (ii) 낮은 형상 fidelity, (iii) 자석판·추적 시스템·펌프 같은 큰 외부 장치 필요, (iv) 느린 가역 변형, (v) 표면 내장 상태 피드백 없음 | p. 1 |
+| electrohydraulic 구동기 배열은 있었지만 내장 피드백 센서가 없었다. HV 구동 신호의 전자기 간섭 때문에 센서 배열을 통합하기 어렵고, high-fidelity 형상 변형에 필요한 규모의 폐루프 센서 피드백은 아직 없었다 | p. 2 |
+| 셀(HASEL + 자기 센서 + 구동 회로)을 반복해 10 × 10 배열을 만들고, 셀마다 개별 주소 지정(individually addressable) 제어를 한다 | p. 2; p. 3; Fig. 1b–e |
+| 성능 요약: 제어 주기 200 Hz, 구동 최대 50 Hz, 변형 분해능 0.1 mm, 힘 분해능 50 mN | p. 1 Abstract; p. 2 |
+| 셀당 최대 지속 변형은 약 12 mm다(8 kV, 60 cycle 후). 구동기 변형률 86 %, 셀 높이 90 mm 대비 13.3 %에 해당한다 | p. 3; Fig. 2b |
+| 전압 조절 폐루프(1 kHz)의 대역폭이 100셀 모두에서 200 Hz 이상이다 | p. 3; Fig. 2f (캡션은 "mean bandwidth of 200 Hz") |
+| HASEL 동특성은 고유진동수 12 Hz이고 20–50 Hz에서 감쇠한다. 감쇠는 주로 유전 유체의 관성 때문이다 | p. 3; Eq. 2; Fig. 2f |
+| 50 Hz까지의 구동은 손끝 수용기(Meissner 10 Hz~, Pacinian 40 Hz~)가 감지할 수 있는 햅틱 피드백이 된다 | p. 3 |
+| 진행파 속도는 최대 354 cm/s다. 탄성 스킨 덕분에 10 × 10 배열에서도 파형이 딱딱하게 픽셀화되지 않는다 | p. 4; Fig. 2g |
+| 연속·절연 스킨 위에서 액체(물)를 옮긴다 | p. 4; Fig. 2h |
+| 100셀을 공진 주파수로 구동해도 소음은 주변보다 8 dB 높고, 느린 구동은 1–2 dB 높다 | p. 4 (Supp. Movie 2, 미확보) |
+| 열 기반 구동과 달리 표면 열이 거의 없어 표면이 실온을 유지한다. 본문에 정량 온도 데이터는 없다 | p. 4 |
+| 준정적 변형 측정의 평균 오차는 < 0.1 mm다(12 mm 변형 대비 0.8 %) | p. 4; Fig. 3b |
+| 센서는 30 Hz까지 HASEL 변형을 정확히 추종한다. 그 위에서는 변형 진폭이 분해능에 가까워져 정확도가 떨어진다 | p. 4; Fig. 3c |
+| 인접 셀의 자속은 측정에 영향을 주지 않는다. 다만 가장자리 셀은 부정확도가 크고, 모듈 끝의 셀은 직렬 연결 임피던스 때문에 잡음이 크다 | p. 4 |
+| 구동기 하나가 sub-mm 변형에서 약 2.5 N을 낸다. 전압 + 변형 → 힘 매핑의 분해능은 50 mN(5 g 질량) 이내다 | p. 5; Fig. 3e; Supp. Fig. 4 (`needs_review`) |
+| 자기 기반 센싱은 비전도성 물체도 감지하고, 카메라 방식과 달리 어둡거나 가려진 환경에서도 작동한다 | p. 5 |
+| 변형 폐루프(200 Hz, 셀별 독립)의 대역폭은 20 Hz다. 한계 원인은 HASEL 동특성과 신호(통신) 지연이다 | p. 5; Fig. 4b |
+| 변형 폐루프는 내부 외란(HASEL의 전하 잔류)과 외부 외란을 제거해, 전압 조절만 쓸 때보다 형상이 정확하다 | p. 6; Fig. 4c |
+| 센싱과 구동을 공간적으로 나눠 동시에 쓴다: 손 누름을 반대쪽의 비례 구동으로 되돌리기, 무게를 재서 숫자로 표시하는 저울, 자기 펜으로 그리기 | p. 6; Fig. 4e–g |
+| 공 조작(정사각 궤적): 25회 모두 목표 궤적에서 1/2 셀(3 cm) 이내다. 평균 완주 28.48 s, 평균 속도 1.424 cells/s(85.44 mm/s) | p. 7; Fig. 5e |
+| 색 분류: 공 세 개를 25회 모두 목표 위치로 옳게 분류했고, 공당 평균 4.66 s가 걸렸다 | p. 7; Fig. 5f |
+| 공 조작 알고리즘은 공을 따라 움직이는 국소 변형만 만들어 표면의 약 10 %만 활성화된다 | p. 7 |
+| 전체 규모: 개별 주소 지정 가능한 전기유압 구동기 100개, 센서 100개, 제어 루프 200개 이상 | p. 8 Discussion |
+
+## 방법·조건
+
+### 구조와 하드웨어
+- 셀: HASEL(미변형 58 × 49 × 14 mm), 센서, 구동 회로를 60 × 60 mm 셀 하나에 넣었다 (p. 3; Fig. 1b).
+- 계층 구조: 셀 10개를 1 × 10 모듈로 묶어 전원과 연산을 공유한다. 모듈 높이는 90 mm(구동기 14 mm 포함)다. 모듈 10개로 10 × 10 디스플레이를 만든다 (p. 3; Fig. 1c, d).
+- 모듈마다 HV 전원(UltraVolt 10A24-P30, 8 kV rail)과 마이크로컨트롤러가 있다 (p. 8; Fig. 1c, e). 모듈들은 외부 AC/DC 전원(ION SFX 650 G, 120 V 벽 콘센트)에 연결된다. 모든 마이크로컨트롤러는 USB 허브를 거쳐 PC 한 대에 연결된다 (p. 8; Fig. 1d, e).
+- 스킨: 실리콘(EcoFlex 00-30) 한 층, 두께 550 μm (p. 8).
+- 전력: 최대 부하에서 셀당 평균 2.8 W, 모듈당 약 1.6 A @ 24 V다. 현재는 벽 전원을 쓰고, 배터리 구동은 "가능하다"고만 적었다 (p. 3).
+- 소프트웨어: PC는 Julia, 마이크로컨트롤러는 C++ (p. 8).
+
+### 구동 (전기유압, HASEL)
+- 원리: 액체 유전체를 채운 파우치 12개를 쌓은 folded HASEL이다. 전압을 걸면 전극이 파우치를 zipping시켜 유체를 밀어내고, 적층 방향(수직)으로 신장한다 (p. 3; Fig. 2a).
+- 구동 전압은 0–8 kV다. 전압–변형에 hysteresis가 있고, 복합 유전 구조에 전하가 잔류해 cycle이 거듭될수록 변형이 줄어든다. 두 효과는 피드백으로 완화한다 (p. 3; Fig. 2b).
+- 구동 회로: 셀마다 optoelectronic half-bridge를 둔다. 충전용·방전용 optocoupler(적외선 LED + HV photodiode) 두 개와 전압 분배기형 HV 센서로 이루어진다. 충전 optocoupler는 공유 HV rail에서 HASEL 양극으로 전류를 끌어오고, 방전 optocoupler는 접지로 흘린다. LED의 PWM duty cycle로 전류와 전압을 조절한다 (p. 3; Fig. 2c, d; Supp. Fig. 1, 2는 미확보).
+- duty cycle(−100 ~ 100 %)과 charge rate의 관계는 선형화할 수 있다. 한 번에 optocoupler 하나만 켜서 전기 동특성을 단순화한다 (p. 3; Fig. 2d; Eq. 7).
+- 전기 동특성: Ge(s) = 293.58/s (duty cycle w % → 전압 v kV) (p. 3; Eq. 1).
+- HASEL 동특성: Gh(s) = 0.014 (24π)² / (s² + 12πs + (24π)²) (전압 kV → 변형 mm) (p. 3; Eq. 2).
+
+### 센싱 (자기 기반 변형·힘 감지)
+- 셀마다 soft magnetic block과 magnetometer(LIS3MDL)를 둔다. 구동이나 외부 누름으로 블록이 움직이면 magnetometer가 자속 밀도 변화를 잰다 (p. 4; p. 8; Fig. 3a).
+- 매핑: 셀별 3차 다항식 ẑ = p3·bz³ + p2·bz² + p1·bz + p0 (p. 4; Eq. 3). 스킨의 기계적 결합을 보정하려고 이웃 네 셀의 추정값에 α = 0.05를 곱해 더한다. 가장자리에서 없는 이웃은 0으로 둔다 (p. 8; Eq. 4).
+- 샘플링 600 Hz, 1차 디지털 LPF(차단 50 Hz) (p. 4).
+- 보정: 셀마다 0 → 8 kV를 8 s 동안 올리면서 모션캡처 z와 magnetometer 값을 최소제곱으로 맞춘다. 약 10분 걸린다 (p. 8).
+- 모듈 안의 magnetometer 10개는 직렬로 배선했다 (p. 4; p. 8; Supp. Fig. 5는 미확보).
+- 힘: HV 센서 전압 v̂와 변형 ẑ를 15차 다항식 힘 매핑 Gf에 넣어 힘을 추정한다. 매핑은 모든 셀에 같고, 정확한 변형 매핑을 전제로 한다 (p. 5; p. 9; Fig. 3d, e). 인접한 두 셀에 걸친 힘은 연속 스킨 때문에 두 셀에 평균되므로, 물체 전체 힘은 셀별 힘을 더해서 구한다 (p. 5).
+- 자기 방식을 고른 이유: 고주파에서도 정확하고 HASEL 전기장과 분리된다. 이전의 strain sensing(ref. 34), capacitive self-sensing(ref. 35)과 대비된다고 적었다 (p. 3).
+- 저자는 이 방식을 "self-sensing"이라 부르지만(Fig. 3 제목; p. 2), 구동기 자체가 아니라 셀 안에 따로 넣은 자석과 magnetometer로 잰다 (p. 4; Fig. 3a).
+
+### 제어
+- cascade 구조이고, 셀마다 독립적으로 동시에 푼다 (p. 3; p. 5; Fig. 4a).
+  - 내부 루프 (전압 조절): Ke(s) = 3 × 10⁵/(s + 150). 1000 Hz ZOH로 구현하고 입력은 600 Hz로 보낸다. 설계 조건은 GeKe > 10 (f < 10 Hz), > 5 (f < 20 Hz), < 0.1 (f > 200 Hz)이다 (p. 9; Eq. 8).
+  - 외부 루프 (변형): Kh(s) = 30(s + 70)/s, 200 Hz ZOH. prefilter F(s) = (200/80)²·(s + 80)²/(s + 200)²를 더했다. 설계 조건은 GhKh > 20 (f < 10 Hz), > 5 (f < 20 Hz), < 0.1 (f > 300 Hz)이다 (p. 9; Eq. 11, 12).
+- **되먹임 변수**: 내부 루프는 구동기 전압(HV 센서), 외부 루프는 셀 변형 ẑ(magnetometer)다. 즉 형상(셀 높이)을 직접 되먹인다 (p. 5; Fig. 4a).
+- 루프 위치: Fig. 1e의 색 구분으로 보면 전압 루프는 모듈 안(마이크로컨트롤러–구동 회로–HV 센서)에서 닫히고, 변형 루프는 magnetometer → 마이크로컨트롤러 → USB → PC를 거친다 (Fig. 1e, 그림 판독). 저자는 변형 대역폭의 한계로 "communication latency"를 들었다 (Fig. 4b caption).
+- 작업 수준 루프 (공 조작): 천장 USB 카메라(260 Hz)로 공 위치를 재고, 속도를 5-sample 이동평균으로 걸러 알고리즘이 52 Hz로 돈다. 가우시안 단면의 반원형 오목면 zr(x) = 13·exp(−(‖x_rel‖ − 1.2)²/(2σ²)), σ = 0.6을 만들고, 그 중심은 x_arc = x_ball − 0.7·x̂_err + 0.2·ẋ_ball이다. 이렇게 만든 10 × 10 zr을 셀별 변형 폐루프 Th의 기준값으로 넣는다. 공이 여러 개면 공별 zr의 최댓값을 쓴다 (p. 9; Eq. 14–16; Fig. 5a, b).
+
+### 측정 조건
+- 변형 ground truth: 7-camera 모션캡처(OptiTrack Prime 13W), 240 Hz, 셀 중앙 마커. 보정 오차는 mean ray error < 0.5 mm, mean wand error < 0.2 mm다 (p. 8; Supp. Fig. 3은 미확보).
+- 전압 개루프 주파수 응답: w(t) = 0.1·sin(2πft), 0.6–300 Hz 로그 간격 32개, 15 s (p. 9; Eq. 6). 전압 폐루프 Bode: vr(t) = 0.4(sin(2πft) + 1) + 0.8 kV (p. 9; Eq. 9).
+- HASEL 개루프: vr(t) = 0.4(sin(2πft) + 1) + 4 kV, 0.6–50 Hz 로그 간격 32개, 15 s. 100셀을 동시에 움직였다 (p. 3; p. 9; Eq. 10).
+- 변형 폐루프: zr(t) = 0.4·sin(2πft) + 1.4 mm, 0.6–50 Hz (p. 9; Eq. 13). 즉 20 Hz 대역폭은 진폭 0.4 mm(중심 1.4 mm)의 작은 신호에서 잰 값이다.
+- 진행파: Fig. 2g 프레임은 d = 14, 25, 43, 58 cm, t = 0.017, 0.050, 0.091, 0.14 s다 (Fig. 2g, 그림 판독).
+- 힘 매핑: DMA(800E2)로 0.5 mm/s 준정적 압입을 했다. 4 kV에서 기준 변형을 잰 뒤 최대 25 N까지 기록했다. 4, 5, 6, 7, 8 kV에서 구동기 3개의 평균을 썼다 (p. 8–9).
+- 공 조작: 탁구공(직경 40 mm, 셀 60 mm보다 작음), 카메라 높이 115 cm, 실험마다 25회 반복 (p. 7; p. 8; p. 9). 정사각 경유점은 (2.5, 7.5), (7.5, 7.5), (7.5, 2.5), (2.5, 2.5)이고, x_err ≤ 0.33(원문 표기 그대로)이면 다음 경유점으로 넘어간다 (p. 9; Eq. 17).
+
+### Park 2025의 인용과 대조
+- Park 2025는 이 논문(ref. 10)을 haptic display의 예(Park2025 p. 1), 그리고 direct addressing을 쓰는 픽셀형 하드웨어의 예(ref. 10, 44; Park2025 p. 1–2)로 인용했다.
+- 대조 결과, 이 논문은 스스로를 multifunctional soft robotic **shape display**로 부른다. haptics는 여러 응용(information display, 상호작용, 물체 조작, 공기역학) 가운데 하나다 (p. 1; p. 3).
+- direct addressing이라는 규정은 원문과 맞는다. 셀마다 전용 half-bridge 구동 회로(optocoupler 2개)와 HV 센서가 있고(p. 3; Fig. 2c), 제어 법칙을 셀마다 독립적으로 푼다(p. 3; p. 5). 저자도 "100 independently-addressable electrohydraulic actuators"라고 적었다 (p. 8).
+- 다만 완전히 독립된 배선은 아니다. HV rail과 마이크로컨트롤러는 1 × 10 모듈 단위로 공유하고(p. 3; Fig. 1c, e), 센서(magnetometer)는 모듈 안에서 직렬로 연결된다(p. 4; p. 8). 즉 구동 채널은 셀 전용, 전원·연산·센서 배선은 모듈 공유인 계층형 direct addressing이다.
+
+### 확인 필요 (`needs_review`)
+- 전압 루프 대역폭이 본문(p. 3)에서는 "above 200 Hz across all 100 cells", Fig. 2 캡션(p. 4)에서는 "mean bandwidth of 200 Hz"다.
+- Fig. 3b의 센서 오차는 n = 90 셀이다. 본문은 "each cell"이라고 적었고 Fig. 3c는 100셀이다. 10셀이 빠진 이유가 본문에 없다 (p. 4; p. 5).
+- 공 속도 계산이 맞지 않는다. 1.424 cells/s × 28.48 s ≈ 40.6 cells인데, Eq. 17 경유점으로 만든 정사각형의 둘레는 20 cells(한 변 5 cells)다. 약 두 배 차이이고, 속도 계산 방식은 본문에 없다 (p. 7; p. 9; Fig. 5e).
+- 색 분류 목표 위치가 red (0, 5), yellow (0, 5)로 같다 (p. 9). Fig. 5f를 보면 red 궤적은 위쪽(x ≈ 5, y ≈ 0)으로 간다 (그림 판독). 오기일 가능성이 있다.
+- 힘 매핑 DMA는 최대 25 N까지 기록했다고 적었지만(p. 8), Fig. 3e의 힘 축은 약 0–3 N이다 (그림 판독). 매핑의 유효 범위가 분명하지 않다.
+- 힘 분해능 50 mN의 근거(Supp. Fig. 4), 15차 다항식 계수(Supp. Eq. 1, Supp. Table 1), HASEL 제작(Supp. Methods), 구동 회로(Supp. Fig. 1, 2), 모듈 보드(Supp. Fig. 6–8), magnetometer 배선(Supp. Fig. 5)은 보충자료에만 있다. 셀당 배선·핀 수도 본문에 없다. 모두 미확보다.
+- "Calibration takes approximately 10 min"이 셀 하나당인지 전체인지 불분명하다 (p. 8).
+- 표면이 실온을 유지한다는 주장에 온도 측정값이 없다 (p. 4).
+- 배터리 구동은 가능성 주장이고 실험은 없다 (p. 3).
+- 폐루프 형상 정확도(Fig. 4c)는 그림으로만 보였고, RMSE 같은 정량 오차가 본문에 없다.
+- 저울 시연(Fig. 4f)은 참값 120 g이고 표시값은 그림 판독상 "115"로 보이지만, 본문에 측정값과 오차가 없다.
+- 진행파 354 cm/s의 계산 방식이 없다. Fig. 2g 첫 프레임 기준으로 역산하면 (58 − 14) cm / (0.14 − 0.017) s ≈ 358 cm/s로 비슷하다 (그림 판독).
+- 변형 루프가 PC에서 계산되는지는 본문에 명시되지 않았고, Fig. 1e 색 구분으로만 추정했다.
+- 표기·참조 불일치: Fig. 4a 캡션은 전압 조절 블록도 Te를 "Fig. 3e"라고 가리키지만 실제로는 Fig. 2e다 (p. 6). 소음 근거가 Results에서는 Supp. Movie 2(p. 4), Discussion에서는 Supp. Movie 3(p. 8)이다. Eq. 3은 bz, Eq. 4는 Bz로 적었다 (p. 4; p. 8).
+- 용어: "0.1 mm sensitivity/resolution"(p. 1; p. 2)은 준정적 평균 오차(p. 4)에서 나온 값이다. 또 스킨과 구동기가 "low (surface/mechanical) compliance"라고 적은 곳(p. 2; p. 3)과 "compliant"라고 적은 곳(p. 8)이 같은 성질을 반대 말로 표현한 것처럼 읽힌다.
+
+## 한계
+- 저자 진술:
+  - 외부 자성 물질이 magnetometer 측정을 교란해 변형 매핑이 부정확해진다. 그래서 표면에서 다룰 수 있는 물체 종류가 제한된다 (p. 5; p. 8).
+  - 장치를 다른 장소로 옮기면 센서를 다시 보정해야 한다 (p. 5).
+  - 가장자리 셀은 측정 부정확도가 크고, 모듈 끝 셀은 직렬 연결 임피던스로 잡음이 크다 (p. 4).
+  - 30 Hz를 넘으면 센싱 정확도가 떨어진다 (p. 4; Fig. 3c).
+  - 변형 폐루프 대역폭은 HASEL 동특성과 신호 지연 때문에 20 Hz로 제한되고, 그보다 빠른 구동은 진폭을 줄여야 한다 (p. 5–6; Fig. 4b).
+  - 전압–변형 hysteresis와 전하 잔류 때문에 반복 구동 시 변형이 줄어든다 (p. 3; Fig. 2b). 전압 루프의 외란 제거가 예상보다 높은 주파수에서 일어나, 모델에 없는 비선형성이 있음을 시사한다 (p. 3).
+  - 모듈은 circuit pin addressing, 센서 신호 임피던스, 전력 소비 때문에 무한히 키울 수 없다. 모듈 수를 늘려 디스플레이를 키울 수 있지만, 통신·연산 속도 유지가 가장 큰 과제이고 새 통신 구조가 필요하다 (p. 8).
+  - 25 × 25 mm보다 작은 구동기는 현재 제작이 어렵다. 작은 셀에서는 필름 두께 문제와 자석 약화로 성능과 센서 분해능이 떨어진다 (p. 8).
+  - 공 궤적 퍼짐(약 1셀)은 underactuated 되기 전의 상한이고, 셀 밀도를 높이면 줄 것으로 예상했다. 색 분류는 공의 초기 속도 때문에 표면 불균일에 더 민감하다 (p. 7).
+  - 현재는 외부 벽 전원으로 구동한다 (p. 3).
+- [추론]:
+  - [추론] 변형은 셀마다 위쪽 한 방향(0 → 약 12 mm)의 수직 변위뿐이다 (p. 3; Fig. 2b). 고정된 받침(모듈 높이 90 mm) 위의 높이장이며, Park 2025의 자유 시트 양방향 접힘(−87° ~ 109°; Park2025 p. 3)과는 변형 종류가 다르다.
+  - [추론] direct addressing이라서 셀 수 N에 비례해 구동 회로(optocoupler 2N개, HV 센서 N개), magnetometer, 마이크로컨트롤러 핀이 늘어난다. 저자가 든 pin addressing 한계(p. 8)가 이 비용이다.
+  - [추론] 작동 중에는 카메라 없이 센싱한다고 강조했지만(p. 2; p. 3), 보정에는 모션캡처가 필요하고(p. 8) 장소를 옮기면 재보정해야 한다(p. 5). 외부 장치 의존이 보정 단계에 남는다.
+  - [추론] 0.1 mm 평균 오차의 기준인 모션캡처의 보정 오차가 mean wand error < 0.2 mm, mean ray error < 0.5 mm다 (p. 8). 기준 장치의 불확도가 주장하는 오차와 같거나 더 크므로, 0.1 mm를 해석할 때 주의해야 한다.
+  - [추론] 20 Hz 대역폭은 0.4 mm 진폭의 작은 신호 조건(Eq. 13)에서 잰 값이다. 전체 범위(0–12 mm)의 큰 진폭 추종 성능은 본문에 없다.
+  - [추론] 힘 추정은 구동기 3개의 평균으로 만든 매핑 하나를 모든 셀에 쓴다 (p. 9). 셀 간 편차가 힘 오차에 주는 영향은 평가되지 않았다.
+  - [추론] 변형 루프가 USB와 PC를 거치는 것으로 보이고(Fig. 1e), 통신 지연이 대역폭을 제한한다(Fig. 4b caption). 셀 수를 늘리면 이 지연이 커질 수 있다. 저자도 새 통신 구조를 과제로 들었다 (p. 8).
+  - [추론] 8 kV를 쓴다 (p. 3). 사람 접촉과 액체 조작에서 절연은 550 μm 실리콘 스킨에 의존하는데(p. 4; p. 8), 절연 신뢰성 평가는 본문에 없다.
+
+## RQ 단서
+- [추론] **되먹임 변수: 온도 vs 형상**: 이 논문은 셀 변형 ẑ를 직접 되먹여 내부 외란(전하 잔류)과 외부 외란을 제거한다 (p. 5–6; Fig. 4a, c). Park 2025는 온도를 되먹이고 곡률은 간접적으로 제어한다 (Park2025 p. 4). 다만 이 논문의 형상 센서는 셀마다 따로 넣은 자석 + magnetometer이고 위치가 셀 격자에 고정된다. 접힘 위치가 바뀌는 Park의 networked 시트에 이런 이산 센서를 붙이면 배선을 줄인 이점이 사라진다. 따라서 구동 저항 자체에서 형상을 읽는 intrinsic shape sensing(Park2025 p. 6)이 필요하다는 근거가 된다.
+- [추론] **주소 지정의 하드웨어 비용**: 이 논문은 셀 100개에 전용 구동 회로 100개(optocoupler 200개), magnetometer 100개, 마이크로컨트롤러 10개를 쓰고(p. 3; p. 8; Fig. 1e), pin addressing이 모듈 확장의 한계다(p. 8). Park 2025는 전극 64개로 저항 308개를 다룬다 (Park2025 p. 3). 채널 수 대비 얻을 수 있는 형상 자유도와 제어 정확도를 같은 기준으로 잰 비교는 두 논문 모두 없다.
+- [추론] **속도 비교의 조건 차이**: 이 논문의 변형 폐루프 대역폭 20 Hz(진폭 0.4 mm; Eq. 13; Fig. 4b)와 Park 2025의 약 0.1 Hz(Park2025 p. 4; Fig. 4c)는 구동 물리(전기유압 vs 전기열 + 수동 냉각), 변형 종류(수직 변위 vs 접힘 곡률), 진폭이 모두 달라 같은 조건의 성능으로 비교할 수 없다. 비교하려면 정규화한 기준(예: 전체 작동 범위 대비 같은 비율의 진폭에서 잰 −3 dB 대역폭)을 먼저 정해야 한다.
+- [추론] **외부 입력 감지와 기능 분할**: 이 논문은 같은 셀 배열로 외부 힘(50 mN)을 감지하고, 일부 셀은 센서로 일부 셀은 구동기로 나눠 쓴다 (p. 5; p. 6; p. 8; Fig. 4e, f). Park 2025의 RNI는 온도만 추정한다 (Park2025 p. 4). 저항 네트워크 신호로 외부 접촉이나 하중을 감지할 수 있는지는 열린 질문이다.
+- [추론] **보정 부담과 환경 강인성**: 이 논문은 셀마다 모션캡처로 보정하고(약 10분; p. 8), 장소를 옮기면 재보정해야 한다(p. 5). Park 2025는 sim-to-real로 학습한 모델로 RNI를 재구성한다 (Park2025 p. 9). 두 방식의 보정 비용과 환경 변화(외부 자기장, 주변 온도)에 대한 강인성은 비교되지 않았다.
+
+## 관련 개념
+- [Field-programmability](../concepts/field-programmability.md) (이 논문은 용어를 쓰지 않는다. 실행 중에 10 × 10 형상 패턴과 셀의 역할을 바꾸는 것이 비교 지점이다.)
+- [공간 주소 지정 방식](../concepts/spatial-addressing.md)
+- [폐루프 형상 제어](../concepts/closed-loop-shape-control.md)
+- [자기 센싱 (Self-sensing)](../concepts/self-sensing.md) (embedded: 셀별 자석 + magnetometer)

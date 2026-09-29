@@ -1,7 +1,0 @@
-no,role,first_author,year,venue,title,doi,why_relevant
-0,target,Park,2025,Nature Communications,Field-programmable robotic folding sheet,10.1038/s41467-025-61838-3,대상 논문
-5,reference,Yan,2023,Nature Communications,Origami-based integration of robots that sense decide and respond,10.1038/s41467-023-37158-9,전기열(줄 가열) 오리가미 로봇의 sense-decide-act
-8,reference,Zhang,2023,Nature Communications,Plug & play origami modules with all-purpose deformation modes,10.1038/s41467-023-39980-7,한 모듈에서 여러 변형 모드를 고르는 오리가미 액추에이터
-10,reference,Johnson,2023,Nature Communications,A multifunctional soft robotic shape display with high-speed actuation sensing and control,10.1038/s41467-023-39842-2,셀별 센싱과 폐루프 제어를 갖춘 형상 디스플레이(direct addressing)
-46,reference,Liu,2021,Science Robotics,Robotic surfaces with reversible spatiotemporal control for shape morphing and object manipulation,10.1126/scirobotics.abf5116,주변 전극 자극형 networked domain 표면
-48,reference,Ni,2022,Nature Communications,Soft shape-programmable surfaces by fast electromagnetic actuation of liquid metal networks,10.1038/s41467-022-31092-y,액체금속 네트워크 표면의 빠른 형상 프로그래밍
