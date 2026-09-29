@@ -1,0 +1,778 @@
+<title>Park 2025 접힘 시트 해설</title>
+<meta name="description" content="Park et al. 2025(Nature Communications)를 처음 읽는 사람을 위해 핵심 주장 다섯 개를 비교 논문 그림과 나란히 놓고 무엇이 새로운지 설명한 페이지">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=swap">
+<style>
+:root{
+  --bg:#F3F3F7; --surface:#FFFFFF; --plate:#FFFFFF;
+  --ink:#1A1830; --ink-2:#4B4865; --ink-3:#686581;
+  --line:#D9D7E4; --line-soft:#E9E7F1;
+  --park:#A3246B; --park-soft:#F7E6EF;
+  --cmp:#33508C; --cmp-soft:#E6EBF6;
+  --infer:#7A5200; --infer-soft:#F9EDD2;
+  --review:#A0282B; --review-soft:#FBE4E2;
+  --read:#3F5B45; --read-soft:#E3EFE5;
+  --scrim:rgba(18,17,32,.82);
+  --t30:#1F0F5C; --t65:#5B1B8C; --t100:#A8307E; --t135:#E4613C; --t170:#F6D743;
+  --f-display:"Noto Serif KR","Nanum Myeongjo","AppleMyungjo","Batang",serif;
+  --f-body:"IBM Plex Sans KR","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#121120; --surface:#1B1A2D; --plate:#F2F2F5;
+    --ink:#ECEAF6; --ink-2:#B6B3CB; --ink-3:#9491AC;
+    --line:#33314B; --line-soft:#27253C;
+    --park:#EE8CC2; --park-soft:#3A1B30;
+    --cmp:#A6B9EC; --cmp-soft:#1C2543;
+    --infer:#F0C36A; --infer-soft:#3A2D10;
+    --review:#F4A5A1; --review-soft:#3E1D1D;
+    --read:#9FD0A9; --read-soft:#1D3323;
+    --scrim:rgba(6,6,12,.88);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121120; --surface:#1B1A2D; --plate:#F2F2F5;
+  --ink:#ECEAF6; --ink-2:#B6B3CB; --ink-3:#9491AC;
+  --line:#33314B; --line-soft:#27253C;
+  --park:#EE8CC2; --park-soft:#3A1B30;
+  --cmp:#A6B9EC; --cmp-soft:#1C2543;
+  --infer:#F0C36A; --infer-soft:#3A2D10;
+  --review:#F4A5A1; --review-soft:#3E1D1D;
+  --read:#9FD0A9; --read-soft:#1D3323;
+  --scrim:rgba(6,6,12,.88);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--f-body); font-size:16px; line-height:1.75;
+  word-break:keep-all; overflow-wrap:break-word;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit; text-decoration-color:var(--line); text-underline-offset:3px}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--park); outline-offset:2px; border-radius:4px}
+img{max-width:100%; height:auto}
+p{margin:0}
+ul,ol{margin:0; padding-left:1.2em}
+
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:28px 72px}
+.prose{max-width:44rem; display:grid; gap:14px; align-content:start}
+
+/* ---------- inline marks ---------- */
+.ref{font-family:var(--f-mono); font-size:.78em; color:var(--ink-3); letter-spacing:-.01em}
+.inf,.nr,.rd{font-family:var(--f-mono); font-size:.76em; padding:.05em .38em; border-radius:4px; white-space:nowrap; letter-spacing:0}
+.inf{color:var(--infer); background:var(--infer-soft)}
+.nr{color:var(--review); background:var(--review-soft)}
+.rd{color:var(--read); background:var(--read-soft)}
+.p-park{color:var(--park); font-weight:600}
+.p-cmp{color:var(--cmp); font-weight:600}
+.mono{font-family:var(--f-mono)}
+.label{font-family:var(--f-body); font-size:.78rem; font-weight:500; letter-spacing:.03em; color:var(--ink-3)}
+
+/* ---------- header ---------- */
+.hero{display:grid; gap:20px; padding-block:12px 28px; border-bottom:1px solid var(--line)}
+.hero h1{
+  font-family:var(--f-display); font-weight:700; margin:0;
+  font-size:clamp(1.85rem, 1.25rem + 2.5vw, 3rem); line-height:1.28; letter-spacing:-.01em;
+  text-wrap:balance; max-width:22em;
+}
+.cite{font-size:.95rem; color:var(--ink-2); max-width:52rem}
+.cite em{font-style:normal; color:var(--ink)}
+.lede{font-size:1.07rem; max-width:46rem}
+.spec{display:grid; grid-template-columns:repeat(auto-fit,minmax(165px,1fr)); gap:0; margin:4px 0 0; border-top:1px solid var(--line)}
+.spec div{padding:12px 14px 12px 0; border-bottom:1px solid var(--line-soft)}
+.spec dt{font-size:.8rem; color:var(--ink-3)}
+.spec dd{margin:2px 0 0; font-family:var(--f-mono); font-weight:500; font-size:1.02rem; font-variant-numeric:tabular-nums}
+.spec dd .ref{display:block; font-weight:400}
+
+.toc{display:flex; flex-wrap:wrap; gap:6px 8px; font-size:.86rem}
+.toc a{display:inline-block; padding:4px 10px; border:1px solid var(--line); border-radius:999px; text-decoration:none; background:var(--surface)}
+.toc a:hover{border-color:var(--ink-3)}
+
+/* ---------- intro blocks ---------- */
+.block{padding-block:36px 8px; display:grid; gap:18px}
+.block h2, .claim h2, .gaps h2, .sources h2{
+  font-family:var(--f-display); font-weight:700; margin:0;
+  font-size:clamp(1.35rem, 1.1rem + 1.1vw, 1.85rem); line-height:1.4; text-wrap:balance;
+}
+.two{display:grid; gap:28px}
+@media (min-width:960px){ .two{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} }
+
+.legend{display:grid; gap:10px; align-content:start; font-size:.92rem; color:var(--ink-2)}
+.legend li{list-style:none}
+.legend ul{padding:0; display:grid; gap:8px}
+
+.req{counter-reset:none; padding:0; display:grid; gap:12px}
+.req li{list-style:none; display:grid; grid-template-columns:3.4em 1fr; gap:4px 10px; align-items:baseline}
+.req .n{font-family:var(--f-mono); color:var(--park); font-weight:500}
+.req .to{grid-column:2; font-size:.84rem; color:var(--ink-3)}
+.req .to a{color:var(--park)}
+
+.papers{display:grid; gap:12px; grid-template-columns:1fr}
+@media (min-width:720px){ .papers{grid-template-columns:1fr 1fr} }
+.paper{border:1px solid var(--line); border-radius:10px; background:var(--surface); padding:14px 16px; display:grid; gap:6px; font-size:.93rem}
+.paper .nm{font-weight:600; color:var(--cmp)}
+.paper .tt{font-size:.84rem; color:var(--ink-3); line-height:1.5}
+.paper .use{font-size:.82rem; color:var(--ink-2)}
+.paper .use a{color:var(--cmp)}
+.aside-note{font-size:.88rem; color:var(--ink-3)}
+
+/* ---------- claims ---------- */
+.claim{padding-block:48px 12px; border-top:1px solid var(--line); margin-top:36px; display:grid; gap:22px}
+.claim:first-of-type{margin-top:28px}
+.kicker{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:.84rem; color:var(--ink-3)}
+.kicker .no{color:var(--park); font-weight:600}
+.claim-head{display:grid; gap:8px}
+.claim-body{display:grid; gap:24px}
+@media (min-width:960px){ .claim-body{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); align-items:start} }
+.results{display:grid; gap:6px; padding-left:1.1em}
+.results li::marker{color:var(--park)}
+
+.concept{border:1px solid var(--line); border-radius:10px; background:var(--surface); padding:16px 18px; display:grid; gap:10px; align-content:start; font-size:.92rem; color:var(--ink-2)}
+.concept h3{margin:0; font-size:1rem; color:var(--ink); font-weight:600}
+.concept .src{font-family:var(--f-mono); font-size:.72rem; color:var(--ink-3)}
+.concept table{border-collapse:collapse; width:100%; font-size:.84rem}
+.concept th,.concept td{text-align:left; padding:6px 8px 6px 0; border-bottom:1px solid var(--line-soft); vertical-align:top}
+.concept th{font-weight:600; color:var(--ink)}
+
+/* lattice diagram */
+.lattice-wrap{display:grid; grid-template-columns:minmax(0,150px) 1fr; gap:14px; align-items:center}
+@media (max-width:420px){ .lattice-wrap{grid-template-columns:1fr} .lattice-wrap svg{max-width:180px} }
+.lattice{width:100%; height:auto; color:var(--ink)}
+.lat-line{stroke:var(--ink-3); stroke-width:1; fill:none; stroke-linecap:round}
+.lat-elec{fill:var(--ink)}
+.lat-centre{fill:var(--surface); stroke:var(--ink-3); stroke-width:1}
+.lat-hi{stroke:var(--park); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round}
+.lat-key{display:grid; gap:4px; font-size:.84rem; padding:0}
+.lat-key li{list-style:none}
+.sw{display:inline-block; width:.9em; height:.9em; vertical-align:-.1em; margin-right:.35em; border-radius:50%}
+.sw.e{background:var(--ink)} .sw.c{border:1px solid var(--ink-3); background:var(--surface)}
+.sw.l{border-radius:0; height:2px; vertical-align:.25em; background:var(--ink-3)}
+.sw.h{border-radius:1px; height:3px; vertical-align:.22em; background:var(--park)}
+
+/* thermal direction bar */
+.tbar{display:grid; gap:6px; margin-top:4px}
+.tbar-grad{height:12px; border-radius:3px; background:linear-gradient(90deg,var(--t30),var(--t65) 25%,var(--t100) 50%,var(--t135) 75%,var(--t170))}
+.tbar-ticks{position:relative; height:2.9em; font-family:var(--f-mono); font-size:.76rem; color:var(--ink-2); font-variant-numeric:tabular-nums}
+.tbar-ticks span{position:absolute; top:0; line-height:1.35}
+.tbar-ticks span small{display:block; color:var(--ink-3); font-family:var(--f-body); font-size:.72rem}
+.tbar-ticks .a{left:0}
+.tbar-ticks .m{left:50%; transform:translateX(-50%); text-align:center}
+.tbar-ticks .z{right:0; text-align:right}
+.tbar-ticks .m::before{content:""; position:absolute; left:50%; top:-10px; width:1px; height:8px; background:var(--ink)}
+.tbar-dir{display:flex; justify-content:space-between; gap:12px; font-size:.8rem; color:var(--ink-2); flex-wrap:wrap}
+
+/* figure pair */
+.pair{display:grid; gap:16px; grid-template-columns:1fr}
+@media (min-width:960px){ .pair{grid-template-columns:minmax(0,5fr) minmax(0,7fr); align-items:start} }
+.fig{margin:0; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column}
+.fig-head{display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 12px; align-items:baseline; padding:9px 14px; font-size:.82rem; border-bottom:1px solid var(--line)}
+.fig-head b{font-weight:600}
+.fig-head .scope{font-family:var(--f-mono); font-size:.72rem; opacity:.9}
+.fig.cmp .fig-head{background:var(--cmp-soft); color:var(--cmp)}
+.fig.park .fig-head{background:var(--park-soft); color:var(--park)}
+.fig-open{display:block; width:100%; padding:10px; margin:0; border:0; background:var(--plate); cursor:zoom-in; position:relative}
+.fig-open img{display:block; width:100%; height:auto}
+.fig-open .zoom-hint{position:absolute; right:10px; bottom:10px; font-family:var(--f-mono); font-size:.68rem; color:#3A3850; background:rgba(255,255,255,.88); border:1px solid #D9D7E4; padding:1px 6px; border-radius:4px; opacity:0; transition:opacity .15s}
+.fig-open:hover .zoom-hint,.fig-open:focus-visible .zoom-hint{opacity:1}
+.fig figcaption{padding:12px 14px 14px; display:grid; gap:8px; font-size:.9rem; color:var(--ink-2); border-top:1px solid var(--line-soft)}
+.fig figcaption .look{color:var(--ink)}
+.fig figcaption .look b{font-weight:600}
+.credit{font-family:var(--f-mono); font-size:.72rem; line-height:1.55; color:var(--ink-3); padding-top:8px; border-top:1px dashed var(--line)}
+
+/* what's new */
+.new{display:grid; gap:8px; padding:18px 20px 20px; border:1px solid var(--line); border-radius:10px; background:var(--surface)}
+.new .label{color:var(--park)}
+.new p:not(.label){font-family:var(--f-display); font-weight:600; font-size:clamp(1.04rem, .95rem + .45vw, 1.28rem); line-height:1.65; max-width:52rem}
+.new .ref{font-family:var(--f-mono); font-weight:400}
+
+.notes{display:grid; gap:8px; font-size:.9rem; color:var(--ink-2); max-width:52rem}
+.notes ul{display:grid; gap:6px}
+
+/* gaps */
+.gaps,.sources{padding-block:48px 8px; border-top:1px solid var(--line); margin-top:36px; display:grid; gap:20px}
+.gap-list{display:grid; gap:14px}
+.gap{display:grid; gap:6px; padding:16px 18px; border:1px solid var(--line); border-radius:10px; background:var(--surface); font-size:.93rem; color:var(--ink-2)}
+.gap h3{margin:0; font-size:1.02rem; color:var(--ink); font-weight:600}
+.gap .id{font-family:var(--f-mono); color:var(--park); margin-right:.4em}
+.gap .rq{color:var(--ink)}
+.status{font-family:var(--f-mono); font-size:.72rem; padding:1px 7px; border-radius:999px; border:1px solid var(--line); color:var(--ink-3); margin-left:.4em; white-space:nowrap}
+.g1{display:grid; gap:16px}
+@media (min-width:960px){ .g1{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr); align-items:start} }
+
+/* sources table */
+.tbl{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--surface)}
+.tbl table{border-collapse:collapse; width:100%; min-width:720px; font-size:.86rem}
+.tbl th,.tbl td{text-align:left; vertical-align:top; padding:10px 14px; border-bottom:1px solid var(--line-soft)}
+.tbl th{font-size:.76rem; font-weight:600; color:var(--ink-3); background:var(--bg)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .mono{font-size:.8rem}
+.foot{font-size:.86rem; color:var(--ink-3); display:grid; gap:6px; max-width:52rem}
+
+/* zoom dialog */
+dialog.zoom{padding:0; border:0; max-width:none; max-height:none; width:100vw; height:100vh; margin:0; background:transparent; color:#fff}
+dialog.zoom::backdrop{background:var(--scrim)}
+.zoom-inner{height:100%; display:grid; grid-template-rows:auto 1fr; background:var(--scrim)}
+.zoom-bar{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 16px; padding-top:calc(10px + env(safe-area-inset-top,0px)); font-size:.85rem; color:#ECEAF6}
+.zoom-bar button{font:inherit; color:#1A1830; background:#fff; border:0; border-radius:6px; padding:5px 12px; cursor:pointer}
+.zoom-scroll{overflow:auto; padding:0 16px 16px; padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.zoom-scroll img{display:block; margin:0 auto; max-width:min(100%,1600px); background:#fff; padding:12px; border-radius:6px}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <nav class="toc" aria-label="이 페이지의 구성">
+    <a href="#frame">문제 설정</a>
+    <a href="#papers">비교 논문</a>
+    <a href="#c1">주장 1 · 현장 프로그래밍</a>
+    <a href="#c2">주장 2 · 전기열 양방향 접힘</a>
+    <a href="#c3">주장 3 · 저항 네트워크</a>
+    <a href="#c4">주장 4 · 온도 폐루프</a>
+    <a href="#c5">주장 5 · 파지와 보행</a>
+    <a href="#gaps">남은 질문</a>
+    <a href="#sources">그림 출처</a>
+  </nav>
+  <p class="label">대상 논문 해설 · 처음 읽는 사람을 위해</p>
+  <h1>접는 자리를 제작이 아니라 현장에서 정하는 로봇 시트</h1>
+  <p class="cite">Park, H., Jeong, Y., Kim, W., Choi, J., Ahn, J., Jeong, J.-H., Park, I. &amp; Kim, J. <em>“Field-programmable robotic folding sheet.”</em> Nature Communications 16, 6937 (2025). <a href="https://doi.org/10.1038/s41467-025-61838-3">doi:10.1038/s41467-025-61838-3</a></p>
+  <p class="lede">Ni 박막 저항 308개를 네트워크로 엮어 PI/PDMS 이중층 시트(6.3 × 6.3 cm)에 넣었다. 같은 저항을 히터와 온도 센서로 번갈아 쓰면서 접힘의 위치·방향·정도를 배치 후 현장에서 다시 정하고, 온도 폐루프(PI) 제어로 접힘을 붙잡고 빠르게 만든다 <span class="ref">(p. 1 Abstract; p. 2–3; Fig. 1)</span>. 이 페이지는 이 논문의 핵심 주장 다섯 개마다 비교 논문 한 편의 그림을 나란히 놓고, 무엇이 새로운지 한 문장으로 적었다.</p>
+  <dl class="spec">
+    <div><dt>시트 크기</dt><dd>6.3 × 6.3 cm<span class="ref">7 × 7 블록 · p. 3</span></dd></div>
+    <div><dt>저항 / 전극</dt><dd>308개 / 64개<span class="ref">p. 3</span></dd></div>
+    <div><dt>작동 온도</dt><dd>30–170 °C<span class="ref">중립 100 °C · p. 3</span></dd></div>
+    <div><dt>접힘각</dt><dd>−87° ~ 109°<span class="ref">p. 3; Fig. 2c</span></dd></div>
+    <div><dt>폐루프 대역폭</dt><dd>약 0.1 Hz<span class="ref">개루프 &lt; 0.03 Hz · p. 4; Fig. 4c</span></dd></div>
+  </dl>
+</header>
+
+<section class="block" id="frame" aria-labelledby="frame-h">
+  <div class="two">
+    <div class="prose">
+      <h2 id="frame-h">저자가 내세운 네 가지 요구조건</h2>
+      <p>서론은 접힘을 현장에서 프로그래밍하려면 다음 네 가지가 필요하다고 정리한다 <span class="ref">(p. 2)</span>. 아래 주장들은 이 요구조건에 하나씩 답하는 구조다.</p>
+      <ol class="req">
+        <li><span class="n">(i)</span><span>조밀하게 분포한 자극 세그먼트로 힌지를 디지털 방식으로 재구성할 수 있어야 한다.</span><span class="to">→ <a href="#c1">주장 1</a>, <a href="#c3">주장 3</a></span></li>
+        <li><span class="n">(ii)</span><span>접힘각이 적어도 −90° ~ 90°를 덮어야 한다.</span><span class="to">→ <a href="#c2">주장 2</a></span></li>
+        <li><span class="n">(iii)</span><span>작업공간을 한정하는 외부 구동 원리에 기대지 않아야 한다.</span><span class="to">→ <a href="#c2">주장 2</a></span></li>
+        <li><span class="n">(iv)</span><span>구동 상태를 모니터링하는 내부 센싱이 있어야 한다. 형상 변형을 서보하고, 빠르게 하고, 강인하게 만들기 위해서다.</span><span class="to">→ <a href="#c3">주장 3</a>, <a href="#c4">주장 4</a></span></li>
+      </ol>
+    </div>
+    <div class="legend">
+      <p class="label">이 페이지 읽는 법</p>
+      <ul>
+        <li><span class="p-park">자홍색</span>은 대상 논문 Park 2025, <span class="p-cmp">남색</span>은 비교 논문이다. 각 주장에서 왼쪽이 “다른 연구는 이렇게 했다”, 오른쪽이 Park 2025다.</li>
+        <li><span class="ref">(p. 3; Fig. 2c)</span>는 원문 위치다. p.는 각 논문 PDF의 쪽 번호다. 다른 논문이면 <span class="ref">(Ni p. 2)</span>처럼 저자를 붙였다.</li>
+        <li><span class="inf">[추론]</span> 원문에 없는 해석이다.</li>
+        <li><span class="rd">[그림 판독]</span> 본문에 수치가 없어 그림을 눈으로 읽은 내용이다.</li>
+        <li><span class="nr">needs_review</span> 확인하지 못한 내용이다. 대부분 확보하지 않은 보충자료(Supplementary Information)에만 있는 내용이다.</li>
+        <li>그림을 누르면 크게 볼 수 있다. 출처와 라이선스는 그림마다, 그리고 <a href="#sources">맨 아래 표</a>에 적었다.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="papers" aria-labelledby="papers-h">
+  <h2 id="papers-h">나란히 놓을 비교 논문 네 편</h2>
+  <div class="papers">
+    <div class="paper">
+      <span class="nm">Zhang 2023</span>
+      <span class="tt">Plug &amp; play origami modules with all-purpose deformation modes · Nat. Commun. 14, 4329</span>
+      <span>공압 Kresling 원통에 pouch를 붙여, 한 모듈에서 가압 방식만 바꿔 굽힘·비틀림·수축과 그 조합 7개 모드를 낸다. 센서가 없는 개루프다 <span class="ref">(Zhang p. 1–5; p. 8)</span>.</span>
+      <span class="use">이 페이지에서: <a href="#c1">주장 1</a></span>
+    </div>
+    <div class="paper">
+      <span class="nm">Ni 2022</span>
+      <span class="tt">Soft shape-programmable surfaces by fast electromagnetic actuation of liquid metal networks · Nat. Commun. 13, 5576</span>
+      <span>영구자석 자기장 속에서 액체금속 리본 전류가 받는 Lorentz force로 초박막을 연속 곡면으로 바꾼다. 형상은 약 7000개 라이브러리를 조회하는 개루프로 정한다 <span class="ref">(Ni p. 2–5)</span>.</span>
+      <span class="use">이 페이지에서: <a href="#c2">주장 2</a>, <a href="#c4">주장 4</a></span>
+    </div>
+    <div class="paper">
+      <span class="nm">Johnson 2023</span>
+      <span class="tt">A multifunctional soft robotic shape display with high-speed actuation, sensing, and control · Nat. Commun. 14, 4516</span>
+      <span>전기유압 HASEL 셀 100개(10 × 10)에 셀마다 구동 회로와 자기 센서를 넣고, 셀 변형을 직접 되먹이는 폐루프를 돌린다 <span class="ref">(Johnson p. 2–5)</span>.</span>
+      <span class="use">이 페이지에서: <a href="#c3">주장 3</a>, <a href="#gaps">남은 질문 G1</a></span>
+    </div>
+    <div class="paper">
+      <span class="nm">Yan 2023</span>
+      <span class="tt">Origami-based integration of robots that sense, decide, and respond · Nat. Commun. 14, 1553</span>
+      <span>쌍안정 빔과 열 인공근육(CSCP)으로 origami 논리 게이트와 메모리를 만들어, 반도체 없이 감지·판단·구동하는 로봇을 시연했다 <span class="ref">(Yan p. 1–2)</span>.</span>
+      <span class="use">이 페이지에서: <a href="#c5">주장 5</a></span>
+    </div>
+  </div>
+  <p class="aside-note">다섯 편 모두 원문 PDF를 확보해 위키에 정리한 논문이다. Liu 2021(Sci. Robot.)은 원문을 확보하지 못해 다루지 않았다.</p>
+</section>
+
+<!-- ============ 주장 1 ============ -->
+<section class="claim" id="c1" aria-labelledby="c1-h">
+  <div class="claim-head">
+    <div class="kicker"><span class="no">주장 1</span><span>Park Fig. 1</span><span>요구조건 (i)</span></div>
+    <h2 id="c1-h">접는 자리를 제작 때가 아니라 현장에서 정한다</h2>
+  </div>
+  <div class="claim-body">
+    <div class="prose">
+      <p>초록은 기존 접힘 구조의 한계를 “고정된 힌지 구조가 얻을 수 있는 접힘 구성을 제한한다”로 요약한다 <span class="ref">(p. 1 Abstract)</span>. 이 논문은 배치(deployment) 뒤 현장에서 제한 없는 힌지 구성으로 시트의 접힘을 프로그래밍하는 것을 field-programmable이라 부른다 <span class="ref">(p. 1 Abstract)</span>. 저자는 display engineering과 programmable logic device의 발전 과정에서 착안해, 분산된 재료 구조에 공간 주소 지정 제어를 결합했다고 설명한다 <span class="ref">(p. 1)</span>.</p>
+      <p>Fig. 1c는 같은 시트에서 접힘 영역을 이동(i)·회전(ii)·누적해 굽힘(iii)으로 만들고, 접는 방향을 바꾸는(iv) 장면이다. Fig. 1d–f는 zero Gaussian curvature가 유지되는 범위에서 만든 wavy pattern, 여러 방향의 multifold, rolling이다 <span class="ref">(p. 2; Fig. 1c–f)</span>.</p>
+    </div>
+    <aside class="concept" aria-label="배경 개념">
+      <p class="label">배경 개념</p>
+      <h3>Field-programmability</h3>
+      <p>배치 뒤 현장에서 형상 변형의 구성, 즉 접힘의 영역·방향·정도를 다시 정할 수 있는 성질이다. 제작 단계에서 힌지가 정해지는 방식과 대비된다 <span class="ref">(Park p. 1)</span>.</p>
+      <p>논문끼리 비교할 때는 <b>무엇을</b> 다시 정하는지(힌지 위치, 변형 모드, 높이 패턴, 궤적)와 <b>어떤 조건에서</b> 가능한지(외부 장치가 필요한지)를 나눠 본다.</p>
+      <p class="src">wiki/concepts/field-programmability.md</p>
+    </aside>
+  </div>
+
+  <div class="pair">
+    <figure class="fig cmp">
+      <div class="fig-head"><span><b>다른 연구</b> · Zhang 2023, Fig. 2a</span><span class="scope">일부 발췌</span></div>
+      <button class="fig-open" type="button" data-cap="Zhang 2023, Fig. 2a · 일부 발췌 · CC BY 4.0">
+        <img src="figures/zhang2023_fig2a.jpg" width="1012" height="504" alt="Zhang 2023 그림 2a. Kresling 패턴의 four-vertex 단위에 추가 crease와 side pouch를 넣은 설계, 수축·팽창 상태, 3D 시제품 사진">
+        <span class="zoom-hint">크게 보기</span>
+      </button>
+      <figcaption>
+        <p>Kresling 원통의 four-vertex 단위에 crease AE, CE를 더하고 side pouch를 붙였다. 팽창한 pouch가 새 구속을 만들어 굽힘 모드가 생긴다 <span class="ref">(Zhang p. 2; Fig. 2a)</span>. 2층 모듈은 가압 방식만 바꿔 7개 모드 가운데 하나를 낸다 <span class="ref">(Zhang p. 3–5; Fig. 3)</span>.</p>
+        <p class="look"><b>볼 곳</b> 빨간 일점쇄선(added crease), 검은 점선(valley), 실선(mountain)이 제작 패턴에 미리 들어가 있다.</p>
+        <p class="credit">Zhang, C. et al. Nat. Commun. 14, 4329 (2023), Fig. 2a · 패널 a만 발췌 · CC BY 4.0</p>
+      </figcaption>
+    </figure>
+    <figure class="fig park">
+      <div class="fig-head"><span><b>Park 2025</b> · Fig. 1</span><span class="scope">그림 전체</span></div>
+      <button class="fig-open" type="button" data-cap="Park 2025, Fig. 1 · 그림 전체 · CC BY-NC-ND 4.0">
+        <img src="figures/park2025_fig1.jpg" width="1492" height="769" alt="Park 2025 그림 1. 시트의 재료 구조, 가열·센싱·폐루프 구조, 접힘 영역의 이동·회전·누적·방향 전환, wavy·multifold·rolling 형상, FEA·IR·RNI 온도 분포">
+        <span class="zoom-hint">크게 보기</span>
+      </button>
+      <figcaption>
+        <p class="look"><b>볼 곳</b> c(ii)의 빨간 선이 접힘 주축이고, 같은 시트에서 이 선이 돌아간다. g는 같은 접힘을 FEA(i), IR 카메라(ii), RNI(iii)로 본 온도 분포다 <span class="ref">(Fig. 1 caption)</span>.</p>
+        <p class="credit">Park, H. et al. Nat. Commun. 16, 6937 (2025), Fig. 1 · 그림 전체, 변경 없음 · CC BY-NC-ND 4.0</p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="new">
+    <p class="label">새로운 점</p>
+    <p>Zhang 2023은 제작 때 새긴 crease 위에서 7개 모드 가운데 하나를 고르지만, Park 2025는 고정 힌지 없이 전력 분포를 바꿔 접힘선의 위치·방향·정도 자체를 다시 정한다. <span class="ref">(Park p. 1; p. 6; Fig. 1c)</span></p>
+  </div>
+  <div class="notes">
+    <p class="label">읽을 때 주의</p>
+    <ul>
+      <li><span class="inf">[추론]</span> Zhang이 현장에서 바꾸는 것은 모드 선택, 압력 크기, 모듈 수다 <span class="ref">(Zhang p. 2–5)</span>. 힌지 수준이 아니라 모드·모듈 수준의 재구성이다.</li>
+      <li>Park의 형상은 zero Gaussian curvature가 보존되는 범위로 한정된다 <span class="ref">(Park p. 2)</span>. <span class="inf">[추론]</span> Zhang이 보인 비틀림 모드는 Park이 시연한 형상 목록(Fig. 1c–f)에 없다.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 주장 2 ============ -->
+<section class="claim" id="c2" aria-labelledby="c2-h">
+  <div class="claim-head">
+    <div class="kicker"><span class="no">주장 2</span><span>Park Fig. 2</span><span>요구조건 (ii), (iii)</span></div>
+    <h2 id="c2-h">외부 자기장이나 공압 없이, 시트 안의 열로 양방향 접힘을 만든다</h2>
+  </div>
+  <div class="claim-body">
+    <div class="prose">
+      <p>Ni 저항에 전류를 흘리면 Joule 열이 나고, PI(CTE 45 ppm/K)와 PDMS(CTE 340 ppm/K)의 열팽창 차이로 시트가 굽는다. SU-8 microrod로 PDMS를 보강해 열팽창을 횡등방성으로 만들었다 <span class="ref">(p. 3)</span>. 식을 때는 자연 대류로 되돌아온다 <span class="ref">(p. 2)</span>.</p>
+      <p>접는 방향은 온도로 정한다. PDMS 경화 온도로 맞춘 중립 온도 T<sub>κ=0</sub> = 100 °C에서는 평평하고, 그보다 뜨거우면 한쪽, 덜 뜨거우면 반대쪽으로 굽는다 <span class="ref">(p. 3; Fig. 2c, d)</span>. 작동 범위는 30–170 °C이고, 상한은 PDMS의 장기 변성으로 정했다 <span class="ref">(p. 3)</span>.</p>
+      <div class="tbar" role="img" aria-label="온도 축. 30도는 작동 하한, 100도는 중립 온도로 평평, 170도는 작동 상한. 중립보다 낮으면 음의 곡률, 높으면 양의 곡률로 접힌다.">
+        <div class="tbar-grad"></div>
+        <div class="tbar-ticks">
+          <span class="a">30 °C<small>작동 하한</small></span>
+          <span class="m">100 °C<small>T<sub>κ=0</sub> · 평평</small></span>
+          <span class="z">170 °C<small>작동 상한</small></span>
+        </div>
+        <div class="tbar-dir"><span>← κ &lt; 0 쪽으로 접힘</span><span>κ &gt; 0 쪽으로 접힘 →</span></div>
+      </div>
+      <p class="aside-note">온도 범위는 p. 3, 방향은 Fig. 2c, d에서 중심 온도별 곡선을 읽었다 <span class="rd">[그림 판독]</span>.</p>
+      <ul class="results">
+        <li>평균 곡률 −1.80 ~ 2.11 cm⁻¹, 전체 접힘각 −87° ~ 109° <span class="ref">(p. 3; Fig. 2c)</span></li>
+        <li>곡률의 82.8 ± 6.80 %가 자극 영역에 모인다 <span class="ref">(p. 3; Fig. 2d)</span></li>
+        <li>여러 위치에서 접어도 곡률이 1.35 ± 0.20 cm⁻¹ 범위다 <span class="ref">(p. 3; Fig. 2e)</span></li>
+        <li>0.05 Hz로 1000회 토글해도 곡률 기울기 절댓값이 10⁻⁵ 미만이다 <span class="ref">(p. 3; Fig. 2f)</span></li>
+      </ul>
+    </div>
+    <aside class="concept" aria-label="배경 개념">
+      <p class="label">배경 개념</p>
+      <h3>분산 전기열 구동</h3>
+      <p>면에 흩어 놓은 저항 발열체로 온도 분포를 만들고, 열팽창 계수가 다른 두 층의 차이로 국소 굽힘이나 접힘을 일으키는 방식이다.</p>
+      <p>수집한 비교 논문 가운데 이 방식을 쓰는 것은 Park 2025뿐이다. Yan 2023의 CSCP도 Joule 가열로 움직이는 열 액추에이터지만 면이 아닌 실 형태이고, 냉각이 동작 주기를 제한한다(주기 약 3.2 s 중 냉각 약 3 s) <span class="ref">(Yan p. 3–4)</span>.</p>
+      <p class="src">wiki/concepts/distributed-electrothermal-actuation.md</p>
+    </aside>
+  </div>
+
+  <div class="pair">
+    <figure class="fig cmp">
+      <div class="fig-head"><span><b>다른 연구</b> · Ni 2022, Fig. 1a–f</span><span class="scope">일부 발췌</span></div>
+      <button class="fig-open" type="button" data-cap="Ni 2022, Fig. 1a–f · 일부 발췌 · CC BY 4.0">
+        <img src="figures/ni2022_fig1a-f.jpg" width="1124" height="412" alt="Ni 2022 그림 1a–f. 액체금속 미세채널과 탄성 막의 제작, 채널 사진, 자기장 B 속 평평한 상태와 전류 I를 흘린 최대 변형 상태, FEA와 3D-DIC 변위 지도">
+        <span class="zoom-hint">크게 보기</span>
+      </button>
+      <figcaption>
+        <p>액체금속(EGaIn) 리본을 두께 약 5 μm의 실리콘 막에 붙이고, 정자기장 속에서 리본 전류가 받는 Lorentz force로 막을 변형한다 <span class="ref">(Ni p. 2; Fig. 1a, d)</span>. 대부분의 실험에서 한 변 38.1 mm 정육면체 영구자석을 표면 아래 약 5 mm에 두었고, 저자도 자기장이 필요하다는 점을 적었다 <span class="ref">(Ni p. 2)</span>.</p>
+        <p class="look"><b>볼 곳</b> c, d의 검은 화살표가 자기장 B, d의 빨간 화살표가 리본 전류 I다. 자석 자체는 이 그림에 나오지 않는다.</p>
+        <p class="credit">Ni, X. et al. Nat. Commun. 13, 5576 (2022), Fig. 1 · 패널 a–f 발췌 · CC BY 4.0</p>
+      </figcaption>
+    </figure>
+    <figure class="fig park">
+      <div class="fig-head"><span><b>Park 2025</b> · Fig. 2</span><span class="scope">그림 전체</span></div>
+      <button class="fig-open" type="button" data-cap="Park 2025, Fig. 2 · 그림 전체 · CC BY-NC-ND 4.0">
+        <img src="figures/park2025_fig2.jpg" width="1526" height="906" alt="Park 2025 그림 2. 국소 온도 반응 IR 영상, 열·응력·변형률 FEA, 중심 온도별 접힘 윤곽, 곡률 분포, 여러 접힘 위치의 곡률, 1000회 반복 곡률">
+        <span class="zoom-hint">크게 보기</span>
+      </button>
+      <figcaption>
+        <p class="look"><b>볼 곳</b> c는 중심 온도 50–170 °C마다 가장자리 윤곽을 추적한 곡선, d는 같은 곡선의 곡률 분포다. d의 회색 띠가 자극 영역이다 <span class="ref">(Fig. 2 caption)</span>.</p>
+        <p class="credit">Park, H. et al. Nat. Commun. 16, 6937 (2025), Fig. 2 · 그림 전체, 변경 없음 · CC BY-NC-ND 4.0</p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="new">
+    <p class="label">새로운 점</p>
+    <p>Ni 2022는 표면 아래 영구자석이 있어야 힘이 생기지만, Park 2025는 시트 안의 저항 발열과 이중층 열팽창만으로 −87° ~ 109°의 양방향 접힘을 만든다. <span class="ref">(Park p. 3; Fig. 2c)</span></p>
+  </div>
+  <div class="notes">
+    <p class="label">읽을 때 주의</p>
+    <ul>
+      <li>속도는 비교하지 않는다. Ni의 약 300 ms는 평면에서 전체 형상까지 걸린 응답 시간이고 <span class="ref">(Ni p. 4)</span>, Park의 약 0.1 Hz는 폐루프 주파수 응답의 대역폭이다 <span class="ref">(Park p. 4; Fig. 4c)</span>. 지표와 측정 방법이 다르다.</li>
+      <li><span class="inf">[추론]</span> 변형 종류도 다르다. Ni는 39 mm 표면의 수 mm 연속 곡면이고 접힘이 없다 <span class="ref">(Ni p. 2; Fig. 1–3)</span>.</li>
+      <li><span class="inf">[추론]</span> 음의 방향 최댓값 −87°는 요구조건 (ii)의 −90°에 조금 못 미친다 <span class="ref">(Park p. 2; p. 3)</span>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 주장 3 ============ -->
+<section class="claim" id="c3" aria-labelledby="c3-h">
+  <div class="claim-head">
+    <div class="kicker"><span class="no">주장 3</span><span>Park Fig. 3</span><span>요구조건 (i), (iv)</span></div>
+    <h2 id="c3-h">전극 64개로 저항 308개를 움직이고, 같은 저항으로 온도를 읽는다</h2>
+  </div>
+  <div class="claim-body">
+    <div class="prose">
+      <p><b>구동.</b> 0.9 × 0.9 cm 블록을 7 × 7로 늘어놓은 시트에 저항 308개가 들어 있고, 전극은 격자 꼭짓점에만 있어 8 × 8 = 64개다 <span class="ref">(p. 3)</span>. 저항이 전극보다 많으므로 저항 하나만 골라 켤 수는 없다. 저자는 이 개별 주소 지정성을 포기하는 대신, 같은 전극 수의 pixelated 설계보다 접힘에 유리하다는 singular value 분석을 근거로 든다 <span class="ref">(p. 3; p. 7)</span>.</p>
+      <p>원하는 온도 분포(morphing command)는 morphing basis 여러 개로 나누고(동시에 최대 4개), 각 basis를 만드는 전극 전압을 genetic algorithm으로 역산한다. basis 하나에 0.8 s 미만이 걸린다 <span class="ref">(p. 3; p. 8; Fig. 3a, b)</span>.</p>
+      <p><b>센싱.</b> 같은 저항이 히터이자 온도 센서다. 구동 전류는 약 200 mA, 센싱 전류는 2 mA 미만이어서 서로 간섭하지 않고, 두 기능은 1 μs 안에 바뀐다 <span class="ref">(p. 2)</span>. 전극 쌍을 1470번 바꿔 가며 전압을 재고, 신경망으로 저항 변화를 재구성한 뒤 Ni의 온도계수(α = 0.006/K)로 온도로 바꾼다. 한 프레임은 약 15 ms다 <span class="ref">(p. 4; p. 8; p. 9; Fig. 3c)</span>. 저자는 이 방법(RNI)이 IR 카메라와 달리 접힘에 의한 시야 가림에 영향받지 않는다고 적었다 <span class="ref">(p. 4)</span>.</p>
+    </div>
+    <aside class="concept" aria-label="배경 개념">
+      <p class="label">배경 개념</p>
+      <h3>공간 주소 지정과 RNI</h3>
+      <p>공간 주소 지정은 흩어진 구동 요소에 에너지를 골라 보내는 배선 방식이다. Park은 기존 방식을 요소마다 배선하는 direct addressing, 행·열로 배선하는 matrix addressing, 연결된 도메인을 소수 전극으로 자극하는 networked domain으로 나눴다 <span class="ref">(Park p. 1–2)</span>.</p>
+      <div class="lattice-wrap">
+        <svg class="lattice" viewBox="0 0 250 250" role="img" aria-label="7 곱하기 7 블록의 저항 네트워크 연결 구조. 꼭짓점 64개에 전극, 각 블록 중심에 전극 없는 연결점, 블록마다 변과 중심으로 모이는 보조 저항 4개.">
+          <defs>
+            <pattern id="elec" x="5" y="5" width="30" height="30" patternUnits="userSpaceOnUse"><circle class="lat-elec" cx="15" cy="15" r="3.6"/></pattern>
+            <pattern id="ctr" x="20" y="20" width="30" height="30" patternUnits="userSpaceOnUse"><circle class="lat-centre" cx="15" cy="15" r="2.1"/></pattern>
+          </defs>
+          <path class="lat-line" d="M20 20H230M20 20V230M20 50H230M50 20V230M20 80H230M80 20V230M20 110H230M110 20V230M20 140H230M140 20V230M20 170H230M170 20V230M20 200H230M200 20V230M20 230H230M230 20V230M20 200L50 230M20 170L80 230M20 140L110 230M20 110L140 230M20 80L170 230M20 50L200 230M20 20L230 230M50 20L230 200M80 20L230 170M110 20L230 140M140 20L230 110M170 20L230 80M200 20L230 50M20 50L50 20M20 80L80 20M20 110L110 20M20 140L140 20M20 170L170 20M20 200L200 20M20 230L230 20M50 230L230 50M80 230L230 80M110 230L230 110M140 230L230 140M170 230L230 170M200 230L230 200"/>
+          <path class="lat-hi" d="M110 110h30v30h-30zM110 110l30 30M140 110l-30 30"/>
+          <rect x="20" y="20" width="210" height="210" fill="url(#ctr)"/>
+          <rect x="5" y="5" width="240" height="240" fill="url(#elec)"/>
+        </svg>
+        <ul class="lat-key">
+          <li><span class="sw e"></span>전극 64개 (꼭짓점 8 × 8)</li>
+          <li><span class="sw l"></span>저항 308개 = 격자 변 112 + 중심으로 모이는 보조 저항 196</li>
+          <li><span class="sw c"></span>블록 중심 연결점 (전극 없음)</li>
+          <li><span class="sw h"></span>단위 격자 하나</li>
+        </ul>
+      </div>
+      <p><span class="inf">[추론]</span> 원문 서술(centered square lattice, 꼭짓점 전극; p. 2–3)로 그린 연결 구조도다. 세어 보면 원문의 308개와 맞는다. 실제 저항은 serpentine 모양을 kite 형상에 채웠다 <span class="ref">(p. 3)</span>.</p>
+      <p>RNI(Resistive Network Imaging)는 저항 네트워크에서 전극 쌍을 바꿔 가며 전류를 넣고 전압을 잰 뒤, 역문제를 풀어 저항 분포를 재구성하는 방법이다. Electrical impedance tomography(EIT)에서 나왔다 <span class="ref">(Park p. 4)</span>.</p>
+      <p>원문 대조: Park은 Ni 2022(ref. 48)를 networked domain의 예로 인용했지만, Ni의 리본은 서로 분리된 독립 채널이다 <span class="ref">(Ni p. 2; p. 8)</span>. <span class="inf">[추론]</span> 수집한 논문 가운데 전기적 networked domain은 Park 2025뿐이다.</p>
+      <p class="src">wiki/concepts/spatial-addressing.md · resistive-network-imaging.md · self-sensing.md</p>
+    </aside>
+  </div>
+
+  <div class="pair">
+    <figure class="fig cmp">
+      <div class="fig-head"><span><b>다른 연구</b> · Johnson 2023, Fig. 1b–e</span><span class="scope">일부 발췌</span></div>
+      <button class="fig-open" type="button" data-cap="Johnson 2023, Fig. 1b–e · 일부 발췌 · CC BY 4.0">
+        <img src="figures/johnson2023_fig1b-e.jpg" width="1472" height="605" alt="Johnson 2023 그림 1b–e. 자석 블록, HASEL 구동기, magnetometer, 구동 회로와 HV 센서로 이루어진 셀, 셀 10개 모듈, 10 곱하기 10 디스플레이와 PC, 전압 조절 루프와 변형 제어 루프의 신호 경로">
+        <span class="zoom-hint">크게 보기</span>
+      </button>
+      <figcaption>
+        <p>셀 100개가 각각 전용 구동 회로(optoelectronic half-bridge)와 HV 센서를 가진 direct addressing이다 <span class="ref">(Johnson p. 3; Fig. 2c)</span>. 변형은 셀마다 따로 넣은 자석 블록과 magnetometer로 잰다 <span class="ref">(Johnson p. 4; Fig. 3a)</span>. HV 전원과 마이크로컨트롤러는 셀 10개로 된 모듈이 공유한다 <span class="ref">(Johnson p. 3; Fig. 1c, e)</span>.</p>
+        <p class="look"><b>볼 곳</b> b의 셀 하나에 구동기, magnetometer, 구동 회로, HV 센서가 모두 들어간다. e는 셀 × 10, 모듈 × 10의 신호 경로다.</p>
+        <p class="credit">Johnson, B. K. et al. Nat. Commun. 14, 4516 (2023), Fig. 1 · 패널 b–e 발췌 · CC BY 4.0</p>
+      </figcaption>
+    </figure>
+    <figure class="fig park">
+      <div class="fig-head"><span><b>Park 2025</b> · Fig. 3</span><span class="scope">그림 전체</span></div>
+      <button class="fig-open" type="button" data-cap="Park 2025, Fig. 3 · 그림 전체 · CC BY-NC-ND 4.0">
+        <img src="figures/park2025_fig3.jpg" width="1528" height="1238" alt="Park 2025 그림 3. morphing command 분해와 PI 폐루프와 RNI 온도 추정의 계산 흐름, PWM과 유전 알고리즘으로 전극 전압을 얻는 과정, 전극 쌍 선택과 딥러닝 재구성, 사용자 입력에 따른 형상 변화 시연과 morphing basis 시간표">
+        <span class="zoom-hint">크게 보기</span>
+      </button>
+      <figcaption>
+        <p class="look"><b>볼 곳</b> b는 morphing basis를 PWM과 genetic algorithm으로 전극 전압으로 바꾸는 과정, c는 전극 쌍 선택 → 전압 차이 → 딥러닝 재구성 → 저항 변화로 이어지는 RNI다. d는 사용자 입력에 따라 형상을 바꾸며 사진(i), IR 영상(ii), RNI 온도(iii)를 함께 보인다 <span class="ref">(Fig. 3 caption)</span>.</p>
+        <p class="credit">Park, H. et al. Nat. Commun. 16, 6937 (2025), Fig. 3 · 그림 전체, 변경 없음 · CC BY-NC-ND 4.0</p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="new">
+    <p class="label">새로운 점</p>
+    <p>Johnson 2023은 셀마다 구동 회로와 센서를 따로 두지만, Park 2025는 전극 64개로 저항 308개를 구동하고 그 저항을 그대로 온도 센서로 써서 센서를 따로 넣지 않는다. <span class="ref">(Park p. 2–4)</span></p>
+  </div>
+  <div class="notes">
+    <p class="label">읽을 때 주의</p>
+    <ul>
+      <li>재는 대상이 다르다. Park은 온도를 재고 형상은 재지 않는다. Johnson은 셀 변형(형상)과 힘을 잰다 <span class="ref">(Park p. 4; p. 6; Johnson p. 4–5)</span>.</li>
+      <li>networked domain이 유리하다는 근거인 singular value 분석(Supp. Fig. 1)과 예시 비교(Supp. Fig. 22)는 보충자료에만 있다 <span class="nr">needs_review</span></li>
+      <li>RNI 재구성 정확도(Supp. Fig. 14, 15)도 보충자료에만 있다 <span class="nr">needs_review</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 주장 4 ============ -->
+<section class="claim" id="c4" aria-labelledby="c4-h">
+  <div class="claim-head">
+    <div class="kicker"><span class="no">주장 4</span><span>Park Fig. 4</span><span>요구조건 (iv)</span></div>
+    <h2 id="c4-h">읽은 온도를 되먹여 접힘을 붙잡고, 빠르게 하고, 외란을 견딘다</h2>
+  </div>
+  <div class="claim-body">
+    <div class="prose">
+      <p>RNI로 추정한 온도를 morphing basis 영역별로 모으고, PI 제어(P = 0.4, I = 0.009)로 각 basis의 PWM duty cycle을 조절한다 <span class="ref">(p. 4; p. 9; Fig. 3a)</span>. 정상상태에서 duty cycle과 평균 곡률은 모든 basis에서 선형이다(R² &gt; 0.95) <span class="ref">(p. 4; Fig. 4a)</span>. 곡률은 이 관계를 거쳐 온도 서보로 간접 제어된다 <span class="ref">(p. 4)</span>.</p>
+      <ul class="results">
+        <li>온도·곡률 대역폭이 개루프 &lt; 0.03 Hz에서 폐루프 약 0.1 Hz로 오른다. 대역폭에서 위상은 약 −85° ~ −55°다 <span class="ref">(p. 4; Fig. 4c, d)</span></li>
+        <li>바람: 개루프는 underactuated되고, 폐루프는 온도와 형상을 유지한다 <span class="ref">(p. 5; Fig. 4e)</span></li>
+        <li>주변 온도 상승(30 → 55 °C, 5분): 개루프는 overactuated되고, 폐루프는 유지한다 <span class="ref">(p. 5; Fig. 4f)</span></li>
+      </ul>
+    </div>
+    <aside class="concept" aria-label="배경 개념">
+      <p class="label">배경 개념</p>
+      <h3>폐루프 형상 제어</h3>
+      <p>상태를 재서 구동 입력을 되먹이는 제어다. 비교할 때는 <b>무엇을</b> 되먹이는지, 즉 온도 같은 구동 상태인지 곡률·변위 같은 형상 자체인지를 구분한다.</p>
+      <table>
+        <thead><tr><th>논문</th><th>되먹임 변수</th></tr></thead>
+        <tbody>
+          <tr><td>Park 2025</td><td>온도, 곡률은 간접 <span class="ref">(p. 4)</span></td></tr>
+          <tr><td>Johnson 2023</td><td>셀 변형(형상) <span class="ref">(p. 5)</span></td></tr>
+          <tr><td>Yan 2023</td><td>외부 접촉 이벤트(이진) <span class="ref">(p. 5–7)</span></td></tr>
+          <tr><td>Ni 2022</td><td>없음, 라이브러리 조회 개루프 <span class="ref">(p. 5)</span></td></tr>
+          <tr><td>Zhang 2023</td><td>없음, 개루프 <span class="ref">(p. 8)</span></td></tr>
+        </tbody>
+      </table>
+      <p class="src">wiki/concepts/closed-loop-shape-control.md</p>
+    </aside>
+  </div>
+
+  <div class="pair">
+    <figure class="fig cmp">
+      <div class="fig-head"><span><b>다른 연구</b> · Ni 2022, Fig. 5</span><span class="scope">그림 전체</span></div>
+      <button class="fig-open" type="button" data-cap="Ni 2022, Fig. 5 · 그림 전체 · CC BY 4.0">
+        <img src="figures/ni2022_fig5.jpg" width="1113" height="573" alt="Ni 2022 그림 5. 문자 N을 투사한 막이 외부 진동 잡음으로 부푼 모습, 과소·과대·최적 보정의 사진과 3D-DIC, 60초 동안 중심 변위의 시간 변화">
+        <span class="zoom-hint">크게 보기</span>
+      </button>
+      <figcaption>
+        <p>진동 잡음으로 막이 부풀자(a), 전류 세기를 바꿔 가며 부풂을 없애는 최적값을 찾았다(b) <span class="ref">(Ni p. 6; Fig. 5b caption)</span>. 형상 입력은 약 7000개 형상 라이브러리를 조회하는 개루프로 정하고 <span class="ref">(Ni p. 5)</span>, 형상은 외부 3D-DIC 카메라로 잰다 <span class="ref">(Ni p. 8)</span>. <span class="inf">[추론]</span> 자동 폐루프라는 서술은 없다.</p>
+        <p class="look"><b>볼 곳</b> c에서 과소 보정(UC), 최적 보정(OC), 과대 보정(OvC)이 차례로 시도된다. 세 수준이 미리 정한 단계로 두 번씩 반복되는 모양이다 <span class="rd">[그림 판독]</span>.</p>
+        <p class="credit">Ni, X. et al. Nat. Commun. 13, 5576 (2022), Fig. 5 · 그림 전체 · CC BY 4.0</p>
+      </figcaption>
+    </figure>
+    <figure class="fig park">
+      <div class="fig-head"><span><b>Park 2025</b> · Fig. 4</span><span class="scope">그림 전체</span></div>
+      <button class="fig-open" type="button" data-cap="Park 2025, Fig. 4 · 그림 전체 · CC BY-NC-ND 4.0">
+        <img src="figures/park2025_fig4.jpg" width="1524" height="987" alt="Park 2025 그림 4. duty cycle에 따른 평균 곡률, 0.09 Hz 조화 입력 추종, 개루프와 폐루프의 크기·위상 주파수 응답, 바람과 주변 온도 상승에서 개루프와 폐루프의 온도와 형상 비교">
+        <span class="zoom-hint">크게 보기</span>
+      </button>
+      <figcaption>
+        <p class="look"><b>볼 곳</b> e, f에서 점선(OL, 개루프)은 외란을 받으면 온도가 기준에서 벗어나고, 실선(CL, 폐루프)은 그대로다. 아래 사진 두 줄(OL, CL)에서 형상 차이가 보인다. c, d는 개루프와 폐루프의 주파수 응답이다 <span class="ref">(Fig. 4 caption)</span>.</p>
+        <p class="credit">Park, H. et al. Nat. Commun. 16, 6937 (2025), Fig. 4 · 그림 전체, 변경 없음 · CC BY-NC-ND 4.0</p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="new">
+    <p class="label">새로운 점</p>
+    <p>Ni 2022는 외란이 생기면 전류를 바꿔 보며 보정값을 찾지만, Park 2025는 시트 안에서 읽은 온도로 PI 폐루프를 돌려 바람과 주변 온도 변화 속에서 형상을 스스로 유지한다. <span class="ref">(Park p. 5; Fig. 4e, f)</span></p>
+  </div>
+  <div class="notes">
+    <p class="label">읽을 때 주의</p>
+    <ul>
+      <li>되먹이는 것은 온도다. <span class="inf">[추론]</span> 외부 하중이나 접촉처럼 온도를 바꾸지 않고 형상을 바꾸는 외란은 이 루프로 보정되지 않을 수 있다. 저자도 intrinsic shape sensing을 향후 과제로 들었다 <span class="ref">(Park p. 4; p. 6)</span>. 아래 <a href="#gaps">남은 질문 G1</a>.</li>
+      <li>바람 세기와 열판 조건의 정량값은 본문에 없다 <span class="ref">(Park p. 9)</span> <span class="nr">needs_review</span></li>
+      <li>정착시간·정상상태 오차(Supp. Fig. 19)와 곡률 서보 정확도(Supp. Fig. 18b)는 보충자료에만 있다 <span class="nr">needs_review</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 주장 5 ============ -->
+<section class="claim" id="c5" aria-labelledby="c5-h">
+  <div class="claim-head">
+    <div class="kicker"><span class="no">주장 5</span><span>Park Fig. 5</span><span>응용</span></div>
+    <h2 id="c5-h">한 장의 시트가 파지 자세와 걸음새를 현장에서 바꾼다</h2>
+  </div>
+  <div class="claim-body">
+    <div class="prose">
+      <p>케이블로 움직이는 continuum manipulator 끝에 시트를 달고, 대상 모양에 맞춰 quadrapod, tripod, winding, pinch, wrap 다섯 가지 파지를 바꿔 가며 했다. 최대 payload-to-weight ratio는 4다 <span class="ref">(p. 5; p. 9; Fig. 5b, c)</span>. 이 실험에서는 대상이 열에 상하지 않도록 중립 온도를 실온(26–30 °C)으로 맞췄다 <span class="ref">(p. 9)</span>.</p>
+      <p>바닥(PTFE 평면)에서는 crawling, waving, walking, dragging이 스트로크당 최대 26.44, 8.85, 6.27, 9.80 mm를 움직였다. 모든 동작에 온도 폐루프를 썼다 <span class="ref">(p. 6; p. 9; Fig. 5d, e)</span>.</p>
+    </div>
+    <aside class="concept" aria-label="배경 개념">
+      <p class="label">배경 개념</p>
+      <h3>무엇을 다시 프로그래밍하나</h3>
+      <p>Field-programmability를 응용 쪽에서 보면, 하드웨어를 바꾸지 않고 동작을 바꾸는 능력이다. 다시 정하는 대상은 논문마다 다르다. Park은 힌지(형상)를 다시 정하고, Yan은 차량 궤적 메모리(8비트, 256가지)를 다시 쓰는데 쓰기는 손으로 한다 <span class="ref">(Yan p. 8–9)</span>.</p>
+      <p class="src">wiki/concepts/field-programmability.md</p>
+    </aside>
+  </div>
+
+  <div class="pair">
+    <figure class="fig cmp">
+      <div class="fig-head"><span><b>다른 연구</b> · Yan 2023, Fig. 5a–i</span><span class="scope">일부 발췌</span></div>
+      <button class="fig-open" type="button" data-cap="Yan 2023, Fig. 5a–i · 일부 발췌 · CC BY 4.0">
+        <img src="figures/yan2023_fig5a-i.jpg" width="1526" height="1074" alt="Yan 2023 그림 5a–i. 파리지옥 개념, 잎·센서·AND 게이트·CSCP 액추에이터로 이루어진 로봇, 회로도, 접촉 센서, 구동 배치, 네 입력 조합에서 잎의 열림과 닫힘 및 센서와 액추에이터 전압">
+        <span class="zoom-hint">크게 보기</span>
+      </button>
+      <figcaption>
+        <p>파리지옥을 본뜬 포획 로봇이다. 두 잎은 origami tab을 힌지로 삼아 AND 게이트 위에 이어져 있고, CSCP 인공근육이 잎을 닫는다 <span class="ref">(Yan p. 5; Fig. 5b, e)</span>. 두 접촉 센서가 모두 눌릴 때만 닫히며, 지연은 약 1.7 s, 닫히는 데는 이 경우 5 s가 걸렸다 <span class="ref">(Yan p. 6; Fig. 5f–i)</span>. 이 논문의 핵심은 반도체 없이 재료 속 논리로 감지·판단·구동을 하는 것이다 <span class="ref">(Yan p. 1–2)</span>.</p>
+        <p class="look"><b>볼 곳</b> e에서 잎·지지대·CSCP의 배치가 고정되어 있다. f–i의 네 입력 조합 가운데 ‘11’에서만 잎이 닫힌다.</p>
+        <p class="credit">Yan, W. et al. Nat. Commun. 14, 1553 (2023), Fig. 5 · 패널 a–i 발췌 · CC BY 4.0</p>
+      </figcaption>
+    </figure>
+    <figure class="fig park">
+      <div class="fig-head"><span><b>Park 2025</b> · Fig. 5</span><span class="scope">그림 전체</span></div>
+      <button class="fig-open" type="button" data-cap="Park 2025, Fig. 5 · 그림 전체 · CC BY-NC-ND 4.0">
+        <img src="figures/park2025_fig5.jpg" width="1529" height="734" alt="Park 2025 그림 5. 탐사 로버 응용 개념도, 다섯 가지 파지의 시작과 완료 사진, 들어 올린 무게와 시트 자중, 네 가지 걸음새의 연속 사진, 스트로크당 이동 거리">
+        <span class="zoom-hint">크게 보기</span>
+      </button>
+      <figcaption>
+        <p class="look"><b>볼 곳</b> b는 파지 다섯 가지의 시작(위)과 완료(아래), c는 들어 올린 무게와 시트 자중(회색 점선), d, e는 걸음새 네 가지와 스트로크당 이동 거리다 <span class="ref">(Fig. 5 caption)</span>.</p>
+        <p class="credit">Park, H. et al. Nat. Commun. 16, 6937 (2025), Fig. 5 · 그림 전체, 변경 없음 · CC BY-NC-ND 4.0</p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="new">
+    <p class="label">새로운 점</p>
+    <p>Yan 2023의 로봇은 제작 때 정한 힌지로 잎을 여닫는 한 가지 동작을 하지만, Park 2025는 같은 시트로 파지 다섯 가지와 걸음새 네 가지를 현장에서 바꿔 가며 한다. <span class="ref">(Park p. 5–6; Fig. 5b, d)</span></p>
+  </div>
+  <div class="notes">
+    <p class="label">읽을 때 주의</p>
+    <ul>
+      <li><span class="inf">[추론]</span> Yan의 형상 변화는 잎 열림/닫힘 같은 이진 상태에 머문다 <span class="ref">(Yan p. 5; Fig. 5)</span>.</li>
+      <li>판단을 어디서 하는지는 반대다. Yan은 판단을 재료 속 논리로 옮겼고, Park의 상위 처리(basis 모집, 궤적 생성, 딥러닝 추론)는 마이크로컨트롤러 CPU 또는 PC에서 한다 <span class="ref">(Park p. 9)</span>.</li>
+      <li>시트는 전극마다 45 AWG 와이어를 납땜해 연결한다 <span class="ref">(Park p. 3; p. 7)</span>. 저자는 이를 하드웨어 안의 전극 트레이스로 바꾸는 것을 과제로 들었다 <span class="ref">(Park p. 6)</span>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 남은 질문 ============ -->
+<section class="gaps" id="gaps" aria-labelledby="gaps-h">
+  <div class="prose">
+    <h2 id="gaps-h">이 논문이 남긴 질문</h2>
+    <p>비교에서 드러난 공백을 <span class="mono">wiki/rq.md</span>에 RQ 후보로 정리했다. 세 후보 모두 사람이 승인하기 전이라 상태는 ‘후보’다. 조건·비교 대상·측정값·판정 기준은 rq.md에 있다.</p>
+  </div>
+  <div class="gap-list">
+    <div class="gap">
+      <h3><span class="id">G1</span>형상을 되먹이지 않는다</h3>
+      <p class="rq">RQ1. 외부 하중이 걸릴 때, 곡률을 직접 되먹이는 제어가 Park의 온도 PI 제어보다 정상상태 곡률 오차를 줄이는가? <span class="status">후보</span></p>
+      <div class="g1">
+        <div class="prose">
+          <p>Park은 온도만 되먹이고 곡률은 간접 제어한다 <span class="ref">(Park p. 4; Fig. 3a)</span>. 저자도 intrinsic shape sensing을 향후 과제로 들었다 <span class="ref">(Park p. 6)</span>. Johnson 2023은 셀 변형을 직접 되먹이는 cascade로 전압 조절만 쓸 때보다 형상이 정확해진다고 보였다 <span class="ref">(Johnson p. 5–6; Fig. 4a, c)</span>. 다만 정량 오차 없이 그림으로만 보였다.</p>
+          <p class="aside-note">Johnson의 변형 폐루프 대역폭 20 Hz는 진폭 0.4 mm의 작은 신호에서 잰 값이고 구동 물리도 달라, Park의 약 0.1 Hz와 같은 조건의 비교가 아니다 <span class="ref">(Johnson p. 5; p. 9 Eq. 13)</span>.</p>
+        </div>
+        <figure class="fig cmp">
+          <div class="fig-head"><span><b>참고</b> · Johnson 2023, Fig. 4a–d</span><span class="scope">일부 발췌</span></div>
+          <button class="fig-open" type="button" data-cap="Johnson 2023, Fig. 4a–d · 일부 발췌 · CC BY 4.0">
+            <img src="figures/johnson2023_fig4a-d.jpg" width="1490" height="558" alt="Johnson 2023 그림 4a–d. 셀별 변형 폐루프 블록도, HASEL·전압 루프·변형 루프의 주파수 응답, 같은 목표를 개루프와 폐루프로 만든 표면 비교, 문자 스크롤 시연">
+            <span class="zoom-hint">크게 보기</span>
+          </button>
+          <figcaption>
+            <p class="look"><b>볼 곳</b> a의 바깥 루프가 magnetic sensing으로 잰 변형 ẑ를 되먹인다. c는 같은 목표(CU 로고)를 개루프(T<sub>e</sub>)와 폐루프(T<sub>h</sub>)로 만든 결과다 <span class="ref">(Johnson Fig. 4 caption)</span>.</p>
+            <p class="credit">Johnson, B. K. et al. Nat. Commun. 14, 4516 (2023), Fig. 4 · 패널 a–d 발췌 · CC BY 4.0</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="gap">
+      <h3><span class="id">G2</span>대역폭을 제한하는 요인이 분리되지 않았다</h3>
+      <p class="rq">RQ2. 강제 대류 냉각은 폐루프 대역폭(약 0.1 Hz)을 얼마나 올리며, 그 대가로 전력이 얼마나 느는가? <span class="status">후보</span></p>
+      <p>Park은 수동 냉각으로 되돌아오고 <span class="ref">(Park p. 2)</span>, 두꺼운 형태에는 가속 냉각이 필요하다고 적었다 <span class="ref">(Park p. 6)</span>. Yan에서 냉각 공기는 CSCP의 열전도를 올렸지만 작동 임계 전압도 1.2 V에서 1.8 V로 올렸다 <span class="ref">(Yan p. 3–4; Fig. 2c)</span>. <span class="inf">[추론]</span> 센싱 프레임(약 15 ms)과 PWM 주기(8 ms)는 0.1 Hz보다 훨씬 빠르므로 냉각과 열용량이 주 제한 요인일 가능성이 크다.</p>
+    </div>
+    <div class="gap">
+      <h3><span class="id">G3</span>networked domain의 우위가 실험으로 검증되지 않았다</h3>
+      <p class="rq">RQ3. 전극 채널 64개로 같을 때, networked domain은 pixelated domain보다 목표 접힘선을 더 많이, 더 정확하게 구현하는가? <span class="status">후보</span></p>
+      <p>우위의 근거는 singular value 분석과 선 접힘 예시 비교다 <span class="ref">(Park p. 3; p. 7; Supp. Fig. 1, 22, 23 미확보)</span>. 수집한 논문 가운데 다른 networked domain 사례가 없어 외부에서 뒷받침하는 자료도 없다 <span class="ref">(wiki/concepts/spatial-addressing.md)</span>.</p>
+    </div>
+    <p class="aside-note">RQ로 만들지 않은 후보: 무전력 형상 유지. <span class="inf">[추론]</span> 수동 냉각으로 되돌아오므로 접힘을 유지하려면 가열을 계속해야 할 것으로 보이지만 원문에 명시되어 있지 않다. 유지 전력을 먼저 재야 공백으로 확정할 수 있다 <span class="ref">(Park p. 2–3; wiki/rq.md)</span>.</p>
+  </div>
+</section>
+
+<!-- ============ 출처 ============ -->
+<section class="sources" id="sources" aria-labelledby="sources-h">
+  <h2 id="sources-h">그림 출처와 라이선스</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>논문</th><th>쓴 그림</th><th>사용 범위</th><th>라이선스</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Park, H. et al. “Field-programmable robotic folding sheet.” Nat. Commun. 16, 6937 (2025). <span class="mono">doi:10.1038/s41467-025-61838-3</span></td>
+          <td>Fig. 1, 2, 3, 4, 5</td>
+          <td>그림 전체, 변경 없음</td>
+          <td><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a></td>
+        </tr>
+        <tr>
+          <td>Zhang, C. et al. “Plug &amp; play origami modules with all-purpose deformation modes.” Nat. Commun. 14, 4329 (2023). <span class="mono">doi:10.1038/s41467-023-39980-7</span></td>
+          <td>Fig. 2a</td>
+          <td>일부 발췌 (패널 a)</td>
+          <td><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></td>
+        </tr>
+        <tr>
+          <td>Ni, X. et al. “Soft shape-programmable surfaces by fast electromagnetic actuation of liquid metal networks.” Nat. Commun. 13, 5576 (2022). <span class="mono">doi:10.1038/s41467-022-31092-y</span></td>
+          <td>Fig. 1a–f, Fig. 5</td>
+          <td>Fig. 1 일부 발췌 (a–f), Fig. 5 그림 전체</td>
+          <td><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></td>
+        </tr>
+        <tr>
+          <td>Johnson, B. K. et al. “A multifunctional soft robotic shape display with high-speed actuation, sensing, and control.” Nat. Commun. 14, 4516 (2023). <span class="mono">doi:10.1038/s41467-023-39842-2</span></td>
+          <td>Fig. 1b–e, Fig. 4a–d</td>
+          <td>일부 발췌 (각 b–e, a–d)</td>
+          <td><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></td>
+        </tr>
+        <tr>
+          <td>Yan, W. et al. “Origami-based integration of robots that sense, decide, and respond.” Nat. Commun. 14, 1553 (2023). <span class="mono">doi:10.1038/s41467-023-37158-9</span></td>
+          <td>Fig. 5a–i</td>
+          <td>일부 발췌 (a–i)</td>
+          <td><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="foot">
+    <p>모든 그림은 출판사 PDF의 해당 영역을 220 dpi 이미지로 옮긴 것이다. 원문 캡션은 옮기지 않았고, 그림 아래 설명은 이 페이지에서 새로 썼다. 라이선스는 <span class="mono">papers/collection_status.csv</span>의 license 열을 따랐다.</p>
+    <p>작성 근거: <span class="mono">wiki/papers/</span>의 논문 페이지 다섯 개, <span class="mono">wiki/concepts/</span>, <span class="mono">wiki/matrix.md</span>, <span class="mono">wiki/rq.md</span>. 위키 페이지는 모두 status: summarized(사람 검토 전)다. 인용한 수치와 그림 설명은 PDF 원문과 다시 대조했다. 보충자료는 확보하지 않았다. 작성 2026-09-29.</p>
+  </div>
+</section>
+
+</div>
+
+<dialog class="zoom" id="zoom" aria-label="그림 크게 보기">
+  <div class="zoom-inner">
+    <div class="zoom-bar"><span class="zoom-cap"></span><button type="button" class="zoom-close">닫기</button></div>
+    <div class="zoom-scroll"><img alt=""></div>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var dlg = document.getElementById('zoom');
+  if (!dlg) return;
+  var big = dlg.querySelector('.zoom-scroll img');
+  var cap = dlg.querySelector('.zoom-cap');
+  function close() { if (typeof dlg.close === 'function') dlg.close(); else dlg.removeAttribute('open'); }
+  document.querySelectorAll('button.fig-open').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var img = btn.querySelector('img');
+      big.src = img.currentSrc || img.src;
+      big.alt = img.alt;
+      cap.textContent = btn.getAttribute('data-cap') || '';
+      if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+    });
+  });
+  dlg.querySelector('.zoom-close').addEventListener('click', close);
+  dlg.addEventListener('click', function (e) {
+    if (e.target === dlg || e.target.classList.contains('zoom-scroll')) close();
+  });
+})();
+</script>
