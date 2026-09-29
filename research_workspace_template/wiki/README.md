@@ -13,7 +13,7 @@
   - `wiki/writing.md`: 두 편 이상에서 반복되는 글쓰기 패턴
   - `wiki/index.md`: 목차
   - `wiki/log.md`: 위키 변경 기록
-  - `wiki/years/`, `wiki/venues/`, `wiki/authors/`, `wiki/topics/`: 허브. `python wiki/_scripts/build_hubs.py`가 논문 frontmatter로 만든다
+  - `wiki/hubs/`(`years/`, `venues/`, `authors/`, `topics/`): 허브. `python wiki/_scripts/build_hubs.py`가 논문 frontmatter로 만든다
   - `wiki/tags.md`: 태그 어휘. 사람이 정한다
 
 ## 작업 순서
@@ -32,6 +32,6 @@
 - 측정 조건이 다른 수치를 같은 조건의 성능처럼 비교하지 않는다.
 - RQ에는 조건, 비교 대상, 측정값, 판정 기준을 적고 상태는 `후보`로 둔다.
 - `status: checked`, RQ 채택, 태그 어휘(`tags.md`)는 사람이 정한다. 어휘에 없는 태그는 논문 페이지에 넣지 않고 `log.md`에 "제안 태그"로 적는다.
-- 허브 폴더와 논문 페이지의 "허브:" 줄은 손으로 고치지 않는다. 논문 frontmatter를 고친 뒤 스크립트를 다시 실행한다.
+- 허브 폴더(`hubs/`)와 논문 페이지의 "허브:" 줄은 손으로 고치지 않는다. 논문 frontmatter를 고친 뒤 스크립트를 다시 실행한다.
 - 가설 파일(`hypotheses/`)은 위키 작업에서 직접 고치지 않는다.
 - 원문을 확보하지 못한 논문은 페이지를 만들지 않는다.

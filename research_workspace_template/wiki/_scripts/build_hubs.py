@@ -1,4 +1,4 @@
-"""wiki/papers/*.md의 frontmatter로 허브(years/, venues/, authors/, topics/)를 만든다.
+"""wiki/papers/*.md의 frontmatter로 허브(wiki/hubs/의 years/, venues/, authors/, topics/)를 만든다.
 
 - 허브 폴더 네 개는 이 스크립트가 통째로 다시 만든다. 손으로 고치지 말고 논문 frontmatter를 고친 뒤 다시 실행한다.
 - 논문 페이지마다 frontmatter 바로 아래의 "허브:" 줄을 갱신한다.
@@ -15,10 +15,11 @@ import unicodedata
 from collections import Counter, defaultdict
 
 WIKI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+HUB_ROOT = os.path.join(WIKI, "hubs")
 HUBS = {"years": "연도", "venues": "학회·저널", "authors": "저자", "topics": "주제"}
 HUB_NOTES = {
     "authors": "제1저자와 마지막 저자만 연결한다. 저자 목록이 \"외\"나 \"et al.\"로 줄어 있으면 제1저자만 연결한다.\n\n",
-    "topics": "[tags.md](../tags.md)에 있는 태그만 만든다.\n\n",
+    "topics": "[tags.md](../../tags.md)에 있는 태그만 만든다.\n\n",
 }
 ETAL = re.compile(r"\s*(외|et\s+al\.?)\s*$", re.I)
 
@@ -142,16 +143,16 @@ def main():
 
     changed, removed = 0, 0
     for folder, label in HUBS.items():
-        d = os.path.join(WIKI, folder)
+        d = os.path.join(HUB_ROOT, folder)
         os.makedirs(d, exist_ok=True)
         files, rows = {}, []
         for key in sorted(groups[folder], key=str.lower):
             entries = sorted(groups[folder][key], key=lambda e: (e["year"], e["first"], e["stem"]))
-            lines = [f"- [{e['first']} {e['year']} — {e['title']}](../papers/{e['stem']}.md) · {e['venue']} · {e['status']}"
+            lines = [f"- [{e['first']} {e['year']} — {e['title']}](../../papers/{e['stem']}.md) · {e['venue']} · {e['status']}"
                      for e in entries]
             files[f"{slug(key)}.md"] = f"# {key}\n\n{HUB_NOTES.get(folder, '')}" + "\n".join(lines) + "\n"
             rows.append(f"- [{key}]({slug(key)}.md) ({len(entries)})")
-        files["index.md"] = (f"# {label} 허브\n\n논문 frontmatter에서 `_scripts/build_hubs.py`가 만든다. 손으로 고치지 않는다.\n\n"
+        files["index.md"] = (f"# {label} 허브\n\n논문 frontmatter에서 `wiki/_scripts/build_hubs.py`가 만든다. 손으로 고치지 않는다.\n\n"
                              + HUB_NOTES.get(folder, "") + ("\n".join(rows) if rows else "- 아직 없음") + "\n")
         for name in os.listdir(d):
             if name.endswith(".md") and name not in files:
@@ -167,11 +168,11 @@ def main():
     for p in papers:
         parts = []
         if p["year"]:
-            parts.append(f"[{p['year']}](../years/{slug(p['year'])}.md)")
+            parts.append(f"[{p['year']}](../hubs/years/{slug(p['year'])}.md)")
         if p["venue"]:
-            parts.append(f"[{p['venue']}](../venues/{slug(p['venue'])}.md)")
-        parts += [f"[{a}](../authors/{slug(a)}.md)" for a in dict.fromkeys(p["authors"])]
-        parts += [f"[{t}](../topics/{slug(t)}.md)" for t in p["tags"]]
+            parts.append(f"[{p['venue']}](../hubs/venues/{slug(p['venue'])}.md)")
+        parts += [f"[{a}](../hubs/authors/{slug(a)}.md)" for a in dict.fromkeys(p["authors"])]
+        parts += [f"[{t}](../hubs/topics/{slug(t)}.md)" for t in p["tags"]]
         body = "\n".join(l for l in p["text"][p["end"]:].split("\n") if not l.startswith("허브: ")).lstrip("\n")
         text = p["text"][:p["end"]] + "\n허브: " + " · ".join(parts) + "\n\n" + body
         if text != p["text"]:
