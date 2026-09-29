@@ -40,7 +40,7 @@ blank ──(GUIDE를 따라 채운다)──▶ example과 같은 모양이 된
    - VS Code, Claude Code 확장(게시자 Anthropic, 로그인 필요)
    - Python 3와 패키지: `pip install requests pypdf pymupdf`
 2. 이 묶음을 통째로 받는다. GUIDE가 `../mns_tutorial_2026_example/`처럼 옆 폴더를 가리키므로 세 폴더를 같은 위치에 둔다.
-3. `mns_tutorial_2026_blank/`를 VS Code로 열고 `GUIDE.md`(또는 브라우저로 `GUIDE.html`)를 0단계부터 따라 한다.
+3. `mns_tutorial_2026_blank/`를 VS Code로 열고 `GUIDE.md`(또는 브라우저로 `GUIDE.html`)를 0단계부터 따라 한다. 같은 따라하기를 온라인으로도 볼 수 있다: [MNS 2026 논문에서 RQ까지](https://claude.ai/artifact/4JsAJihHA4gWtkRtBFvbTG)
 4. 실습이 끝나면 `research_workspace_template/`을 복사해 자기 프로젝트 이름으로 바꾸고, 그 폴더의 `README.md`를 따라 시작한다.
 
 ## 라이선스

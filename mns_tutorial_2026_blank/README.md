@@ -9,7 +9,7 @@ VS Code와 Claude Code로 연구 작업공간을 직접 만들고, 논문 한 �
 
 1. 아래 준비물을 설치한다.
 2. 이 폴더를 VS Code에서 **File > Open Folder**로 연다.
-3. **[GUIDE.md](GUIDE.md)**를 열고 0단계부터 따라 한다. 단계마다 실제 VS Code 화면이 있다. 같은 내용을 브라우저로 보려면 `GUIDE.html`을 연다(입력문 복사 버튼, 캡처 확대 보기).
+3. **[GUIDE.md](GUIDE.md)**를 열고 0단계부터 따라 한다. 단계마다 실제 VS Code 화면이 있다. 같은 내용을 브라우저로 보려면 `GUIDE.html`을 열거나 [온라인 페이지](https://claude.ai/artifact/4JsAJihHA4gWtkRtBFvbTG)를 연다(입력문 복사 버튼, 캡처 확대 보기).
 4. 막히면 `../mns_tutorial_2026_example/`에서 같은 단계의 파일을 보거나 복사해 다음 단계로 넘어간다.
 
 ## 준비물
