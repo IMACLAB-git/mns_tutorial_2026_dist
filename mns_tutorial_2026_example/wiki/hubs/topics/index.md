@@ -1,6 +1,6 @@
 # 주제 허브
 
-논문 frontmatter에서 `wiki/_scripts/build_hubs.py`가 만든다. 손으로 고치지 않는다.
+논문 페이지를 추가하거나 고칠 때 함께 갱신한다(`wiki/README.md` 작업 순서).
 
 `wiki/tags.md`에 있는 태그만 만든다.
 

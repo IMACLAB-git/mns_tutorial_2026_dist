@@ -85,7 +85,7 @@ papers/README.md 규칙에 따라 papers/seed_papers.csv의 논문을 수집해�
 ## 3단계. 대상 논문 위키 페이지 + 원문 대조
 
 1. `wiki/README.md`와 `wiki/papers/_template.md`를 만든다. `../mns_tutorial_2026_example/wiki/`에서 복사해도 된다.
-   - 복사한 README의 작업 순서에는 허브 만들기(5번)와 `wiki/log.md` 변경 기록(6번)이 들어 있다. 캡처할 때의 README에는 없던 단계라 화면과 조금 다르게 진행될 수 있다.
+   - 복사한 README의 작업 순서에는 허브 갱신(6번)과 `wiki/log.md` 변경 기록(7번)이 들어 있다. 캡처할 때의 README에는 없던 단계라 화면과 조금 다르게 진행될 수 있다.
 
 ![wiki/README.md와 양식 파일](guide_img/03a_wiki_readme.png)
 
@@ -150,13 +150,13 @@ collected 상태인 나머지 4편도 같은 규칙으로 위키 페이지를 �
 
 ![matrix.md 미리보기. 논문별 구동 원리, 외부 장치, 주소 지정, 센싱, 제어 루프, 속도, 형상](guide_img/04d_matrix_preview.png)
 
-5. (선택) 허브를 만든다. 논문 페이지 frontmatter의 연도·학회·저자로 `wiki/hubs/`에 허브 페이지를 만들고, 논문 페이지마다 `허브:` 줄을 단다. 캡처에는 없는 단계다.
+5. (선택) 허브를 만든다. 허브는 논문을 연도·학회·저자로 묶은 목차 페이지다. 캡처에는 없는 단계다. example의 `wiki/README.md`를 복사했다면 위 요청에서 이미 만들어졌을 수 있다.
 
 ```
-python wiki/_scripts/build_hubs.py
+wiki/papers의 논문 페이지로 wiki/hubs/에 연도·학회·저자 허브를 만들어줘. 저자는 제1저자와 마지막 저자만 쓰고, 논문 페이지마다 해당 허브로 가는 링크를 달아줘.
 ```
 
-   주제 허브는 `wiki/tags.md`에 태그 어휘를 적고 논문 페이지에 `tags`를 붙여야 생긴다. 예시는 `../mns_tutorial_2026_example/wiki/tags.md`와 `wiki/hubs/`에 있다.
+   주제 허브는 `wiki/tags.md`에 태그 어휘를 먼저 정해야 만들 수 있다. 예시는 `../mns_tutorial_2026_example/wiki/tags.md`와 `wiki/hubs/`에 있다.
 
 **확인**: 칸마다 원문 위치가 있는지, 해석에 `[추론]`이 붙었는지, 확인 못 한 칸이 `needs_review`인지 본다.
 

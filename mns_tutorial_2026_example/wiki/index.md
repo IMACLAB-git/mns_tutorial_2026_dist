@@ -22,7 +22,7 @@
 - [무전력 형상 유지](concepts/shape-retention.md) — 쌍안정, 상변화 고정 등 입력 없이 형상 유지
 
 ## 허브
-논문 frontmatter에서 `_scripts/build_hubs.py`가 `hubs/`에 만든다. 손으로 고치지 않는다.
+논문 페이지를 추가하거나 고칠 때 함께 갱신한다(`README.md` 작업 순서 6번).
 - [연도](hubs/years/index.md) · [학회·저널](hubs/venues/index.md) · [저자](hubs/authors/index.md) · [주제](hubs/topics/index.md)
 - [tags.md](tags.md): 태그 어휘(사람이 정함). `CLAUDE.md`의 연구 키워드 8개
 - [log.md](log.md): 위키 변경 기록

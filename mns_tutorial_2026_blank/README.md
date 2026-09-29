@@ -23,7 +23,7 @@ VS Code와 Claude Code로 연구 작업공간을 직접 만들고, 논문 한 �
 | 폴더·파일 | 내용 |
 |---|---|
 | `papers/` | `seed_papers.csv`: 논문 6편의 DOI 목록. `no` 0번이 대상 논문이다. |
-| `wiki/` | 비어 있는 위키. `papers/`, `concepts/`, 변경 기록 `log.md`, 허브 `hubs/`(연도·학회·저자·주제)와 허브를 만드는 `_scripts/build_hubs.py`만 있다. |
+| `wiki/` | 비어 있는 위키. `papers/`, `concepts/`, 변경 기록 `log.md`, 허브 폴더 `hubs/`(연도·학회·저자·주제)만 있다. |
 | `explainer/` | 비어 있다. 6단계(추가 실습)에서 설명 페이지를 만든다. |
 | `GUIDE.md` | 단계별 따라하기(0–6단계) |
 | `GUIDE.html` | GUIDE.md를 브라우저용 페이지로 옮긴 것. `guide_img/`의 캡처를 불러온다. |

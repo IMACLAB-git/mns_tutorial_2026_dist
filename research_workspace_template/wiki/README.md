@@ -13,7 +13,7 @@
   - `wiki/writing.md`: 두 편 이상에서 반복되는 글쓰기 패턴
   - `wiki/index.md`: 목차
   - `wiki/log.md`: 위키 변경 기록
-  - `wiki/hubs/`(`years/`, `venues/`, `authors/`, `topics/`): 허브. `python wiki/_scripts/build_hubs.py`가 논문 frontmatter로 만든다
+  - `wiki/hubs/`(`years/`, `venues/`, `authors/`, `topics/`): 허브. 논문을 연도·학회·저자·주제로 묶은 목차 페이지
   - `wiki/tags.md`: 태그 어휘. 사람이 정한다
 
 ## 작업 순서
@@ -22,9 +22,10 @@
 3. `matrix.md`: 행은 논문, 열은 비교 축이다. 비교 축은 처음 만들 때 후보를 제안하고, 사람이 정한 뒤 표 머리에 적는다.
 4. `gaps.md`: 공백 표(공백 | 근거 논문·원문 위치·근거 등급 | 해석)를 쓴 뒤, 공백마다 RQ 후보를 하나씩 쓴다.
 5. 글쓰기 노트에서 두 편 이상 반복되는 패턴은 `writing.md`로 올린다.
-6. `index.md`에 새 페이지를 한 줄씩 추가하고, `python wiki/_scripts/build_hubs.py`로 허브와 논문 페이지의 "허브:" 줄을 다시 만든다. 스크립트가 보고한 문제(빈 항목, 어휘 밖 태그)는 고치거나 `log.md`에 남긴다.
-7. `log.md`에 입력, 생성·수정·건너뛴 파일, 상태 변화, `matrix.md`·`gaps.md`에 미친 영향(없으면 "영향 없음"), 중단이나 사람 승인 이유를 적는다.
-8. search 라운드에서 들어온 논문이 공백 판정을 바꾸면, `gaps.md`의 해당 공백에 영향 판정(strengthened | weakened | refuted | no_change | needs_review)을 적고, 관련 가설 이름과 함께 `log.md`와 `decision_log.md`에 적는다.
+6. `index.md`에 새 페이지를 한 줄씩 추가한다.
+7. 허브를 갱신한다. 새 논문의 연도, 학회, 제1저자와 마지막 저자, 태그마다 `hubs/<years|venues|authors|topics>/<이름>.md`에 `- [제1저자 연도 — 제목](../../papers/<파일>.md) · 학회 · status` 한 줄을 더한다. 허브 페이지가 없으면 만들고 그 폴더의 `index.md`에 올린다. 논문 페이지 frontmatter 바로 아래 `허브:` 줄에 그 허브 페이지들을 링크한다.
+8. `log.md`에 입력, 생성·수정·건너뛴 파일, 상태 변화, `matrix.md`·`gaps.md`에 미친 영향(없으면 "영향 없음"), 중단이나 사람 승인 이유를 적는다.
+9. search 라운드에서 들어온 논문이 공백 판정을 바꾸면, `gaps.md`의 해당 공백에 영향 판정(strengthened | weakened | refuted | no_change | needs_review)을 적고, 관련 가설 이름과 함께 `log.md`와 `decision_log.md`에 적는다.
 
 ## 지킬 것
 - 모든 주장과 수치, 비교표의 칸마다 원문 위치(p. / Fig. / Table)를 적는다. 모르는 칸은 `needs_review`로 둔다.
@@ -32,6 +33,8 @@
 - 측정 조건이 다른 수치를 같은 조건의 성능처럼 비교하지 않는다.
 - RQ에는 조건, 비교 대상, 측정값, 판정 기준을 적고 상태는 `후보`로 둔다.
 - `status: checked`, RQ 채택, 태그 어휘(`tags.md`)는 사람이 정한다. 어휘에 없는 태그는 논문 페이지에 넣지 않고 `log.md`에 "제안 태그"로 적는다.
-- 허브 폴더(`hubs/`)와 논문 페이지의 "허브:" 줄은 손으로 고치지 않는다. 논문 frontmatter를 고친 뒤 스크립트를 다시 실행한다.
+- 허브는 정리한 논문으로만 만든다. 빈 허브 페이지를 미리 만들지 않고, 같은 대상의 허브를 둘 만들지 않는다. 학회는 전체 이름으로 쓰고 권·쪽 번호는 뗀다. 파일 이름은 소문자와 하이픈으로 쓴다(예: `nature-communications.md`, `hyunkyu-park.md`).
+- 저자 허브는 제1저자와 마지막 저자만 만든다. 저자 목록이 "외"로 줄어 있으면 제1저자만 만든다. 주제 허브는 `tags.md`의 태그로만 만든다.
+- 논문 페이지의 연도·학회·저자·태그를 고치면 관련 허브도 같은 작업 안에서 고친다.
 - 가설 파일(`hypotheses/`)은 위키 작업에서 직접 고치지 않는다.
 - 원문을 확보하지 못한 논문은 페이지를 만들지 않는다.

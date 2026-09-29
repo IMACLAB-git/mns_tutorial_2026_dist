@@ -18,7 +18,7 @@
 
 ## 캡처 실행 뒤에 더한 것
 
-- 허브(`wiki/hubs/`): `python wiki/_scripts/build_hubs.py`가 논문 frontmatter로 연도·학회·저자·주제 허브를 만든다. 논문 페이지 frontmatter 아래의 `허브:` 줄도 이 스크립트가 단다.
+- 허브(`wiki/hubs/`): 논문 5편을 연도·학회·저자·주제로 묶은 목차 페이지와, 논문 페이지 frontmatter 아래의 `허브:` 줄. 논문을 더하거나 고치면 `wiki/README.md` 작업 순서 6번에 따라 함께 갱신한다.
 - 태그(`wiki/tags.md`와 논문 페이지의 `tags`): `CLAUDE.md`의 연구 키워드 8개를 어휘로 옮기고, `matrix.md`와 개념 페이지를 근거로 논문마다 붙였다. 사람이 확인하지 않았다.
 - 변경 기록(`wiki/log.md`): 3–6단계의 위키 변경을 GUIDE의 완료 응답과 결과 파일을 보고 사후에 적었다.
 
